@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import useExampleStore from './stores/exampleStore/exampleStore';
 
-function App() {
+const PeopleList: React.FC = () => {
+  const people = useExampleStore((state) => state.people);
+  const add = useExampleStore((state) => state.add);
+  const remove = useExampleStore((state) => state.remove);
+
+  const handleAdd = () => {
+    const name = prompt('Enter name:');
+    const age = parseInt(prompt('Enter age:') || '0', 10);
+    if (name) {
+      add(name, age);
+    }
+  };
+
+  const handleRemove = (name: string) => {
+    remove(name);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>People List</h1>
+      <button onClick={handleAdd}>Add Person</button>
+      <ul>
+        {people.map((person) => (
+          <li key={person.name}>
+            {person.name} ({person.age} years old)
+            <button onClick={() => handleRemove(person.name)}>Remove</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
-}
+};
 
-export default App;
+export default PeopleList;
