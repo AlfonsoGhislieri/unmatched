@@ -10,7 +10,6 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
-    "typescript-eslint": "^7.12.0",
     "web-vitals": "^4.1.0"
   },
   "type": "module",
@@ -37,11 +36,13 @@
     "@eslint/compat": "^1.0.3",
     "@eslint/js": "^9.4.0",
     "@typescript-eslint/eslint-plugin": "^7.12.0",
-    "eslint": "9.x",
+    "eslint": "8.x",
+    "eslint-plugin-jest": "^28.6.0",
     "eslint-plugin-react": "^7.34.2",
     "eslint-plugin-react-hooks": "^4.6.2",
     "globals": "^15.4.0",
     "sass": "^1.77.4",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.12.0"
   }
 }
