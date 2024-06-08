@@ -16,6 +16,11 @@ export default [
     },
     languageOptions: { globals: { ...globals.browser, ...globals.jest } },
     rules: { "react/react-in-jsx-scope": "off" },
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
   },
   {
     files: ["**/*.test.{js,jsx,ts,tsx}", "**/__tests__/**/*.{js,jsx,ts,tsx}"], // Apply to test files
