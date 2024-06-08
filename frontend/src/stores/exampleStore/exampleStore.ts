@@ -1,6 +1,6 @@
-import {create} from 'zustand';
-import {combine, devtools} from 'zustand/middleware';
-import {immer} from 'zustand/middleware/immer';
+import { create } from 'zustand';
+import { combine, devtools } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
 
 // https://github.com/pmndrs/zustand/blob/HEAD/docs/guides/typescript.md
 interface Person {
@@ -26,11 +26,11 @@ const useExampleStore = create(
               state.people = state.people.filter((p) => p.name !== name);
             });
           },
-        })
-      )
+        }),
+      ),
     ),
-    { name: 'ExampleStore' }
-  )
+    { name: 'ExampleStore' },
+  ),
 );
 
 export default useExampleStore;
