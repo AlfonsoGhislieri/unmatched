@@ -6,8 +6,8 @@ import reactHooks from "eslint-plugin-react-hooks";
 import jest from "eslint-plugin-jest";
 
 export default [
-  pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
+  ...tseslint.configs.stylistic,
   pluginReactConfig,
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
@@ -15,7 +15,11 @@ export default [
       "react-hooks": reactHooks,
     },
     languageOptions: { globals: { ...globals.browser, ...globals.jest } },
-    rules: { "react/react-in-jsx-scope": "off" },
+    rules: { 
+    ...pluginJs.configs.recommended.rules,
+    "react/react-in-jsx-scope": "off",     
+    "@typescript-eslint/no-unused-vars": "off" // duplicated from eslint reccomended rules
+  },
     settings: {
       react: {
         version: "detect",
