@@ -15,7 +15,7 @@ class MatchupSchema(BaseModel):
     fighter2_id: int
     plays: int
     fighter1_winrate: int
-    fighter1_winrate: int
+    fighter2_winrate: int
 
     class Config:
         orm_mode = True
