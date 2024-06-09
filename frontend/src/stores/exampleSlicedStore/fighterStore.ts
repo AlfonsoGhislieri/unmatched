@@ -1,7 +1,6 @@
 // @ts-nocheck
 import { create } from 'zustand';
 import { combine } from 'zustand/middleware';
-import { immer } from 'zustand/middleware/immer';
 
 // Splitting out a store into slices
 // https://github.com/pmndrs/zustand/blob/HEAD/docs/guides/slices-pattern.md
@@ -40,9 +39,9 @@ const useStore = create(
         ...createProductSlice,
         ...createUserSlice,
       },
-      (set) => ({}),
-    ),
-  ),
+      (set) => ({})
+    )
+  )
 );
 
 export default useStore;
