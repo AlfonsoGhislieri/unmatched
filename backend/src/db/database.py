@@ -19,7 +19,7 @@ def get_database():
     else:
         DATABASE_URL = os.getenv('DEV_DATABASE_URL')
 
-    engine = create_engine(DATABASE_URL)
+    engine = create_engine(DATABASE_URL) # if you want to see log of actions add echo=True
     Session = sessionmaker(bind=engine)
     
     return Session, engine
