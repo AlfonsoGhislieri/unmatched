@@ -39,3 +39,17 @@ Files taken from https://www.umleague.net/fighterstats are stored in data folder
 Backend test suite is setup using pytest run it:
 
 `pytest`
+
+Tests with coverage
+
+```
+coverage run -m pytest
+coverage report
+coverage html
+```
+
+# Starting up the API routes
+
+```
+fastapi dev src/main.py
+```
