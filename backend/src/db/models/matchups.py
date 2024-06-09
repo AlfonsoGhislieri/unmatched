@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey,UniqueConstraint
+from sqlalchemy import Column, Integer, ForeignKey, UniqueConstraint, Index
 from .base import Base
 
 class Matchup(Base):
@@ -12,4 +12,6 @@ class Matchup(Base):
     
     __table_args__ = (
             UniqueConstraint('fighter1_id', 'fighter2_id', name='unique_matchup'),
+            Index('idx_fighter1_id', 'fighter1_id'),
+            Index('idx_fighter2_id', 'fighter2_id'),
         )
