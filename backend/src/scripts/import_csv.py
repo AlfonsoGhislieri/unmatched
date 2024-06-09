@@ -1,5 +1,6 @@
 import sys
 import os
+import itertools
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import pandas as pd
@@ -29,27 +30,28 @@ def insert_fighter_data(session, df_fighters):
 def insert_matchup_data(session, df_matchup_plays, df_matchup_rate):
     fighter_ids = {fighter.name: fighter.id for fighter in session.query(Fighter).all()}
 
-    for _, row in df_matchup_plays.iterrows():
-        fighter1_name = row['category']
+    fighter_names = df_matchup_plays.columns[1:]  # Get fighter names from columns, excluding 'category'
+
+    for fighter1_name, fighter2_name in itertools.product(fighter_names, df_matchup_plays['category']):
+        if fighter1_name == fighter2_name:
+            continue  # Skip matchups with the same fighter
+
         fighter1_id = fighter_ids[fighter1_name]
-        
-        for fighter2_name, plays in row.items():
-            if fighter2_name == 'category':
-                continue  # Skip the category column
+        fighter2_id = fighter_ids[fighter2_name]
 
-            plays = int(plays)
-            fighter2_id = fighter_ids[fighter2_name]
-            # Get intersection for matchups - structure of data makes this be inversed
-            fighter1_winrate = float(df_matchup_rate[df_matchup_rate['category'] == fighter2_name][fighter1_name].values[0])
+        plays = df_matchup_plays.loc[df_matchup_plays['category'] == fighter2_name, fighter1_name].values[0]
+        fighter1_winrate = df_matchup_rate.loc[df_matchup_rate['category'] == fighter2_name, fighter1_name].values[0]
 
-            if plays > 0:
-                existing_matchup = session.query(Matchup).filter_by(fighter1_id=fighter1_id, fighter2_id=fighter2_id).first()
+        plays = int(plays)
+        fighter1_winrate = float(fighter1_winrate)
 
-                if existing_matchup:
-                    existing_matchup.plays = plays
-                    existing_matchup.fighter1_winrate = fighter1_winrate
-                else:
-                    session.add(Matchup(fighter1_id=fighter1_id, fighter2_id=fighter2_id, plays=plays, fighter1_winrate=fighter1_winrate))
+        existing_matchup = session.query(Matchup).filter_by(fighter1_id=fighter1_id, fighter2_id=fighter2_id).first()
+
+        if existing_matchup:
+            existing_matchup.plays = plays
+            existing_matchup.fighter1_winrate = fighter1_winrate
+        else:
+            session.add(Matchup(fighter1_id=fighter1_id, fighter2_id=fighter2_id, plays=plays, fighter1_winrate=fighter1_winrate))
     session.commit()
 
 if __name__ == "__main__":
