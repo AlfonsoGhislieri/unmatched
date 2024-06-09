@@ -23,6 +23,7 @@ def insert_fighter_data(session, df_fighters):
         else:
             session.add(Fighter(name=name, plays=plays, winrate=winrate))
 
+    session.commit()
 
 # Insert matchup data
 def insert_matchup_data(session, df_matchup_plays, df_matchup_rate):
@@ -40,7 +41,7 @@ def insert_matchup_data(session, df_matchup_plays, df_matchup_rate):
             fighter2_id = fighter_ids[fighter2_name]
             # Get intersection for matchups - structure of data makes this be inversed
             fighter1_winrate = float(df_matchup_rate[df_matchup_rate['category'] == fighter2_name][fighter1_name].values[0])
-            
+
             if plays > 0:
                 existing_matchup = session.query(Matchup).filter_by(fighter1_id=fighter1_id, fighter2_id=fighter2_id).first()
 
@@ -49,6 +50,7 @@ def insert_matchup_data(session, df_matchup_plays, df_matchup_rate):
                     existing_matchup.fighter1_winrate = fighter1_winrate
                 else:
                     session.add(Matchup(fighter1_id=fighter1_id, fighter2_id=fighter2_id, plays=plays, fighter1_winrate=fighter1_winrate))
+    session.commit()
 
 if __name__ == "__main__":
     Session, engine = get_database()
@@ -64,5 +66,4 @@ if __name__ == "__main__":
         insert_fighter_data(session, df_fighters)
         print("Inserting matchup data...")
         insert_matchup_data(session, df_matchup_plays, df_matchup_winrate)
-        session.commit()
         print("Data saved.")
