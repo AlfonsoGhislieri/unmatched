@@ -17,3 +17,7 @@ If you have missing import errors from pylance select the appropriate interprete
 pip install pipreqs
 pipreqs ./ --ignore .venv
 ```
+
+# Running db setup script
+
+`sh ./src/scripts/setup-db.sh`
