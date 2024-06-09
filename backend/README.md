@@ -45,8 +45,12 @@ Tests with coverage
 ```
 coverage run -m pytest
 coverage report
-coverage html
 ```
+
+Or to see it on the browser
+`coverage html`
+
+Then open htmlcov/index.html in your browser
 
 # Starting up the API routes
 
