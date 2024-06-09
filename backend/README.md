@@ -21,3 +21,9 @@ pipreqs ./ --ignore .venv
 # Running db setup script
 
 `sh ./src/scripts/setup-db.sh`
+
+Then create .env file inside of the root and add development database URL
+
+```
+DEV_DATABASE_URL=postgresql+psycopg2://dev_user:dev_password@localhost:5432/unmatched_dev
+```
