@@ -1,7 +1,8 @@
 
-DB_USER="devuser"
-DB_PASSWORD="devpassword"
-DB_NAME="devunmatched"
+DB_USER="dev_user"
+DB_PASSWORD="dev_password"
+DB_NAME="unmatched_dev"
+DB_NAME_TEST="unmatched_test"
 
 echo "Creating PostgreSQL user and database..."
 
@@ -22,13 +23,19 @@ fi
 # Create database
 if ! psql -U postgres -lqt | cut -d \| -f 1 | grep -qw $DB_NAME; then
   psql -U postgres -c "CREATE DATABASE $DB_NAME;"
+  psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
   echo "Database '$DB_NAME' created."
 else
   echo "Database '$DB_NAME' already exists."
 fi
 
-# Grant privileges
-psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
-echo "Granted all privileges on database '$DB_NAME' to user '$DB_USER'."
+# Create test database
+if ! psql -U postgres -lqt | cut -d \| -f 1 | grep -qw $DB_NAME_TEST; then
+  psql -U postgres -c "CREATE DATABASE $DB_NAME_TEST;"
+  psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME_TEST TO $DB_USER;"
+  echo "Test database '$DB_NAME_TEST' created."
+else
+  echo "Test database '$DB_NAME_TEST' already exists."
+fi
 
 echo "Setup complete. Please restart your terminal."
