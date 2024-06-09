@@ -6,7 +6,6 @@ from db.database import get_database_connection
 @pytest.fixture(scope='module')
 def connection():
     try:
-        # Establish a connection to the database
         connection = get_database_connection()
         yield connection
     except OperationalError as e:
