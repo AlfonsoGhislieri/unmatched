@@ -23,3 +23,13 @@ def get_database():
     Session = sessionmaker(bind=engine)
     
     return Session, engine
+
+SessionLocal, engine = get_database()
+
+# Dependency to get DB session
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

@@ -19,3 +19,13 @@ class MatchupSchema(BaseModel):
 
     class Config:
         orm_mode = True
+
+class MatchupDetailSchema(BaseModel):
+    id: int
+    fighter_id: int
+    opponent_id: int
+    plays: int
+    winrate: float
+
+    class Config:
+        orm_mode = True
