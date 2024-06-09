@@ -54,6 +54,7 @@ def insert_matchup_data(session, df_matchup_plays, df_matchup_rate):
 
 if __name__ == "__main__":
     Session, engine = get_database()
+    # Base.metadata.drop_all(engine) uncomment to drop all tables
     Base.metadata.create_all(engine)
 
     # Read CSV data
