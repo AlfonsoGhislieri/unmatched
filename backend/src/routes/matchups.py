@@ -21,28 +21,23 @@ def read_matchup(matchup_id: int, db: Session = Depends(get_db)):
 
 @router.get("/fighter/{fighter_id}", response_model=List[MatchupDetailSchema])
 def read_matchups_by_fighter(fighter_id: int, db: Session = Depends(get_db)):
-    matchups = db.query(Matchup).filter((Matchup.fighter1_id == fighter_id) | (Matchup.fighter2_id == fighter_id)).all()
+    matchups = db.query(Matchup).filter(
+        (Matchup.fighter1_id == fighter_id) | (Matchup.fighter2_id == fighter_id)
+    ).all()
+    
     if not matchups:
         raise HTTPException(status_code=404, detail="Matchups not found for the given fighter")
 
-    detailed_matchups = []
-    for matchup in matchups:
-        if matchup.fighter1_id == fighter_id:
-            detailed_matchup = {
-                "id": matchup.id,
-                "fighter_id": matchup.fighter1_id,
-                "opponent_id": matchup.fighter2_id,
-                "plays": matchup.plays,
-                "winrate": matchup.fighter1_winrate,
-            }
-        else:
-            detailed_matchup = {
-                "id": matchup.id,
-                "fighter_id": matchup.fighter2_id,
-                "opponent_id": matchup.fighter1_id,
-                "plays": matchup.plays,
-                "winrate": matchup.fighter2_winrate,
-            }
-        detailed_matchups.append(detailed_matchup)
+    # normalise data for consumption on frontend
+    detailed_matchups = [
+        MatchupDetailSchema(
+            matchup_id=matchup.id,
+            fighter_id=fighter_id,
+            opponent_id=matchup.fighter2_id if matchup.fighter1_id == fighter_id else matchup.fighter1_id,
+            plays=matchup.plays,
+            winrate=matchup.fighter1_winrate if matchup.fighter1_id == fighter_id else matchup.fighter2_winrate,
+        )
+        for matchup in matchups
+    ]
 
     return detailed_matchups

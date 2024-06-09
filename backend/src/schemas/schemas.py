@@ -21,7 +21,7 @@ class MatchupSchema(BaseModel):
         orm_mode = True
 
 class MatchupDetailSchema(BaseModel):
-    id: int
+    matchup_id: int
     fighter_id: int
     opponent_id: int
     plays: int
