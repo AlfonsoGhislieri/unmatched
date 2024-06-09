@@ -8,6 +8,7 @@ class Matchup(Base):
     fighter2_id = Column(Integer, ForeignKey('fighters.id'), nullable=False)
     plays = Column(Integer, nullable=False)
     fighter1_winrate = Column(Integer, nullable=False)
+    fighter2_winrate = Column(Integer, nullable=False)
     
     __table_args__ = (
             UniqueConstraint('fighter1_id', 'fighter2_id', name='unique_matchup'),

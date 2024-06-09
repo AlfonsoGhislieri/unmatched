@@ -28,10 +28,8 @@ def test_insert_matchup_data(test_session, mock_fighters_df, mock_matchup_plays_
 
     # Check if matchup data was inserted correctly
     matchups = test_session.query(Matchup).all()
-    assert len(matchups) == 2
-    matchup_1 = test_session.query(Matchup).filter_by(fighter1_id=achilles.id, fighter2_id=alice.id).first()
-    assert matchup_1.plays == 66
-    assert matchup_1.fighter1_winrate == 71
-    matchup_2 = test_session.query(Matchup).filter_by(fighter1_id=alice.id, fighter2_id=achilles.id).first()
-    assert matchup_2.plays == 66
-    assert matchup_2.fighter1_winrate == 29
+    assert len(matchups) == 1
+    matchup = test_session.query(Matchup).filter_by(fighter1_id=achilles.id, fighter2_id=alice.id).first()
+    assert matchup.plays == 66
+    assert matchup.fighter1_winrate == 71
+    assert matchup.fighter2_winrate == 29

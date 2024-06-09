@@ -16,17 +16,12 @@ def insert_fighter_data(session, df_fighters):
         winrate = float(row['Win Percentage']) * 100
         plays = int(row['Number of Plays'])
 
-        existing_fighter = session.query(Fighter).filter_by(name=name).first()
-
-        if existing_fighter:
-            existing_fighter.winrate = winrate
-            existing_fighter.plays = plays
-        else:
-            session.add(Fighter(name=name, plays=plays, winrate=winrate))
+        session.add(Fighter(name=name, plays=plays, winrate=winrate))
 
     session.commit()
 
 # Insert matchup data
+
 def insert_matchup_data(session, df_matchup_plays, df_matchup_rate):
     fighter_ids = {fighter.name: fighter.id for fighter in session.query(Fighter).all()}
 
@@ -41,22 +36,32 @@ def insert_matchup_data(session, df_matchup_plays, df_matchup_rate):
 
         plays = df_matchup_plays.loc[df_matchup_plays['category'] == fighter2_name, fighter1_name].values[0]
         fighter1_winrate = df_matchup_rate.loc[df_matchup_rate['category'] == fighter2_name, fighter1_name].values[0]
+        fighter2_winrate = df_matchup_rate.loc[df_matchup_rate['category'] == fighter1_name, fighter2_name].values[0]
 
         plays = int(plays)
         fighter1_winrate = float(fighter1_winrate)
+        fighter2_winrate = float(fighter2_winrate)
 
-        existing_matchup = session.query(Matchup).filter_by(fighter1_id=fighter1_id, fighter2_id=fighter2_id).first()
+        # Check for existing matchup in either direction
+        existing_matchup = session.query(Matchup).filter(
+            ((Matchup.fighter1_id == fighter1_id) & (Matchup.fighter2_id == fighter2_id)) |
+            ((Matchup.fighter1_id == fighter2_id) & (Matchup.fighter2_id == fighter1_id))
+        ).first()
 
-        if existing_matchup:
-            existing_matchup.plays = plays
-            existing_matchup.fighter1_winrate = fighter1_winrate
-        else:
-            session.add(Matchup(fighter1_id=fighter1_id, fighter2_id=fighter2_id, plays=plays, fighter1_winrate=fighter1_winrate))
-    session.commit()
+        if not existing_matchup:
+            session.add(Matchup(
+                fighter1_id=fighter1_id, 
+                fighter2_id=fighter2_id, 
+                plays=plays, 
+                fighter1_winrate=fighter1_winrate, 
+                fighter2_winrate=fighter2_winrate
+            ))
+
+        session.commit()
 
 if __name__ == "__main__":
     Session, engine = get_database()
-    # Base.metadata.drop_all(engine) uncomment to drop all tables
+    Base.metadata.drop_all(engine) 
     Base.metadata.create_all(engine)
 
     # Read CSV data

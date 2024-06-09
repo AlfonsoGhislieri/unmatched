@@ -32,7 +32,7 @@ def test_create_matchup(test_session):
     test_session.add(fighter2)
     test_session.commit()
 
-    matchup = Matchup(fighter1_id=fighter1.id, fighter2_id=fighter2.id, plays=66, fighter1_winrate=70)
+    matchup = Matchup(fighter1_id=fighter1.id, fighter2_id=fighter2.id, plays=66, fighter1_winrate=70, fighter2_winrate=30)
     test_session.add(matchup)
     test_session.commit()
 
@@ -48,8 +48,8 @@ def test_unique_matchup(test_session):
     test_session.add(fighter2)
     test_session.commit()
 
-    matchup1 = Matchup(fighter1_id=fighter1.id, fighter2_id=fighter2.id, plays=66, fighter1_winrate=70)
-    matchup2 = Matchup(fighter1_id=fighter1.id, fighter2_id=fighter2.id, plays=77, fighter1_winrate=80)
+    matchup1 = Matchup(fighter1_id=fighter1.id, fighter2_id=fighter2.id, plays=66, fighter1_winrate=70, fighter2_winrate=30)
+    matchup2 = Matchup(fighter1_id=fighter1.id, fighter2_id=fighter2.id, plays=77, fighter1_winrate=80, fighter2_winrate=20)
     test_session.add(matchup1)
     test_session.commit()
 
