@@ -11,7 +11,6 @@ def test_read_all_fighters(client: TestClient, test_session: Session):
     test_session.add_all([fighter1, fighter2])
     test_session.commit()
 
-
     response = client.get("/fighters/")
     assert response.status_code == 200
     fighters = response.json()

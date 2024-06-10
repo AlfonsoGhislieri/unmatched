@@ -5,7 +5,6 @@ from db.models.matchups import Matchup
 from db.models.fighters import Fighter
 
 def test_read_matchups(client: TestClient, test_session: Session):
-    # Add test data
     fighter1 = Fighter(name="Fighter 1", plays=10, winrate=50.0)
     fighter2 = Fighter(name="Fighter 2", plays=20, winrate=60.0)
     test_session.add_all([fighter1, fighter2])
@@ -23,7 +22,6 @@ def test_read_matchups(client: TestClient, test_session: Session):
     assert matchups[0]["fighter2_id"] == fighter2.id
 
 def test_read_matchup(client: TestClient, test_session: Session):
-    # Add test data
     fighter1 = Fighter(name="Fighter 1", plays=10, winrate=50.0)
     fighter2 = Fighter(name="Fighter 2", plays=20, winrate=60.0)
     test_session.add_all([fighter1, fighter2])
@@ -45,7 +43,6 @@ def test_read_matchup(client: TestClient, test_session: Session):
     assert response.json()["detail"] == "Matchup not found"
 
 def test_read_matchups_by_fighter(client: TestClient, test_session: Session):
-    # Add test data
     fighter1 = Fighter(name="Fighter 1", plays=10, winrate=50.0)
     fighter2 = Fighter(name="Fighter 2", plays=20, winrate=60.0)
     fighter3 = Fighter(name="Fighter 3", plays=30, winrate=70.0)
