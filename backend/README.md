@@ -10,6 +10,9 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+Install pre-commit hook
+`pip install pre-commit`
+
 If you have missing import errors from pylance select the appropriate interpreter for your the venv environment
 `ctrl+shift+P` --> Python: Select Interpreter
 

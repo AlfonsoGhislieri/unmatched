@@ -1,14 +1,15 @@
-import sys
-import os
 import itertools
+import os
+import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import pandas as pd
+
+from db.database import get_session_engine
 from db.models.base import Base
 from db.models.fighters import Fighter
 from db.models.matchups import Matchup
-from db.database import get_session_engine
 
 
 # Insert Fighter data

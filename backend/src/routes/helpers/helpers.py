@@ -1,6 +1,7 @@
 from typing import List
-from schemas.schemas import MatchupDetailSchema
+
 from db.models.matchups import Matchup
+from schemas.schemas import MatchupDetailSchema
 
 
 def normalize_matchup_data(

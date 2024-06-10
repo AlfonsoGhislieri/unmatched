@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
-from factories.factories import FighterFactory, MatchupFactory
 from sqlalchemy.orm import Session
+
+from factories.factories import FighterFactory, MatchupFactory
 
 
 def test_read_matchups(client: TestClient):

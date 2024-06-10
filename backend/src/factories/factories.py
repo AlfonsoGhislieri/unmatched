@@ -1,5 +1,6 @@
 import factory
 from factory.alchemy import SQLAlchemyModelFactory
+
 from db.models.fighters import Fighter
 from db.models.matchups import Matchup
 

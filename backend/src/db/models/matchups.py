@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, ForeignKey, UniqueConstraint, Index
+from sqlalchemy import Column, ForeignKey, Index, Integer, UniqueConstraint
+
 from .base import Base
 
 

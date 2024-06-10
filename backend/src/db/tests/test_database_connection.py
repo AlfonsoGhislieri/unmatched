@@ -1,6 +1,7 @@
 import pytest
-from sqlalchemy.exc import OperationalError
 from sqlalchemy import text
+from sqlalchemy.exc import OperationalError
+
 from db.database import get_session_engine
 
 

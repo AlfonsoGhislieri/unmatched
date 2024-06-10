@@ -1,9 +1,11 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import List
-from schemas.schemas import FighterSchema
-from db.models.fighters import Fighter
+
 from db.dependencies import get_db
+from db.models.fighters import Fighter
+from schemas.schemas import FighterSchema
 
 router = APIRouter()
 
