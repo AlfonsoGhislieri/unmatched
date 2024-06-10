@@ -28,7 +28,9 @@ def insert_fighter_data(db_session, df):
 
 
 def insert_matchup_data(db_session, df_plays, df_winrate):
-    fighter_ids = {fighter.name: fighter.id for fighter in session.query(Fighter).all()}
+    fighter_ids = {
+        fighter.name: fighter.id for fighter in db_session.query(Fighter).all()
+    }
 
     fighter_names = df_plays.columns[
         1:

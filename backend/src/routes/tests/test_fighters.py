@@ -1,4 +1,4 @@
-from factories.factories import FighterFactory
+from factories.b_factory import FighterFactory
 from fastapi.testclient import TestClient
 
 

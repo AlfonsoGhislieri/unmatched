@@ -1,7 +1,7 @@
 import pytest
 from db.dependencies import get_db
 from db.models.base import Base
-from factories.factories import BaseFactory
+from factories.b_factory import BaseFactory
 from fastapi.testclient import TestClient
 from main import app
 from sqlalchemy import create_engine, text

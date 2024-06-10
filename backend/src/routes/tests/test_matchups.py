@@ -1,4 +1,4 @@
-from factories.factories import FighterFactory, MatchupFactory
+from factories.b_factory import FighterFactory, MatchupFactory
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
