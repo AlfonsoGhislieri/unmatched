@@ -34,3 +34,9 @@ repos:
         types: [file]
         files: '^frontend/.*\.(md|js|tsx|ts)$'
         exclude: '(^backend/|^\.venv/|^frontend/node_modules/)'
+
+      - id: eslint
+        name: eslint
+        entry: bash -c 'cd frontend && yarn run format:lint'
+        language: system
+        pass_filenames: false # makes command run just once

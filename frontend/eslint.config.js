@@ -17,9 +17,11 @@ export default [
     languageOptions: { globals: { ...globals.browser, ...globals.jest } },
     rules: {
       ...pluginJs.configs.recommended.rules,
-      'react/react-in-jsx-scope': 'off',
-      '@typescript-eslint/no-unused-vars': 'off', // duplicated from eslint reccomended rules
+      'react/react-in-jsx-scope': 'off', // New React versions do not require this
+      '@typescript-eslint/no-unused-vars': 'off', // Duplicated from eslint reccomended rules
+      '@typescript-eslint/ban-ts-comment': 'off', // Relaxing to make dev experience easier for now - TODO: remove
     },
+    ignores: ['.config/*', 'node_modules/*', 'dist/*', 'build/*'],
     settings: {
       react: {
         version: 'detect',
