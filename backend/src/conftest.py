@@ -5,10 +5,20 @@ from db.models.base import Base
 from fastapi.testclient import TestClient
 from main import app
 from db.dependencies import get_db
-from factories.factories import BaseFactory, FighterFactory, MatchupFactory
+from factories.factories import BaseFactory
 
 DATABASE_URL = f'postgresql://dev_user:dev_password@localhost:5432/unmatched_test'
 engine = create_engine(DATABASE_URL)
+
+# Passes session to all factories
+def set_session_factory_for_all_subclasses(session):
+  def set_session_factory(factory_cls, session):
+    factory_cls._meta.sqlalchemy_session_factory = lambda: session
+
+  for subclass in BaseFactory.__subclasses__():
+    set_session_factory(subclass, session)
+    for subsubclass in subclass.__subclasses__():
+        set_session_factory(subsubclass, session)
 
 @pytest.fixture(scope='module')
 def test_engine():
@@ -23,9 +33,7 @@ def test_engine():
 def test_session(test_engine):
   Session = sessionmaker(bind=test_engine)
   session = Session()
-  BaseFactory._meta.sqlalchemy_session_factory = lambda: session
-  FighterFactory._meta.sqlalchemy_session_factory = lambda: session
-  MatchupFactory._meta.sqlalchemy_session_factory = lambda: session
+  set_session_factory_for_all_subclasses(session)
 
   yield session
 
