@@ -40,3 +40,5 @@ repos:
         entry: bash -c 'cd frontend && yarn run format:lint'
         language: system
         pass_filenames: false # makes command run just once
+        files: '^frontend/.*\.(js|jsx|ts|tsx)$'
+        exclude: '(^backend/|^\.venv/|^frontend/node_modules/)'
