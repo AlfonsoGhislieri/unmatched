@@ -1,8 +1,9 @@
-import itertools
 import os
 import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+import itertools
 
 import pandas as pd
 from db.database import get_session_engine
@@ -12,29 +13,29 @@ from db.models.matchups import Matchup
 
 
 # Insert Fighter data
-def insert_fighter_data(session, df_fighters):
-    for _, row in df_fighters.iterrows():
+def insert_fighter_data(db_session, df):
+    for _, row in df.iterrows():
         name = row["category"]
         winrate = float(row["Win Percentage"]) * 100
         plays = int(row["Number of Plays"])
 
-        session.add(Fighter(name=name, plays=plays, winrate=winrate))
+        db_session.add(Fighter(name=name, plays=plays, winrate=winrate))
 
-    session.commit()
+    db_session.commit()
 
 
 # Insert matchup data
 
 
-def insert_matchup_data(session, df_matchup_plays, df_matchup_rate):
+def insert_matchup_data(db_session, df_plays, df_winrate):
     fighter_ids = {fighter.name: fighter.id for fighter in session.query(Fighter).all()}
 
-    fighter_names = df_matchup_plays.columns[
+    fighter_names = df_plays.columns[
         1:
     ]  # Get fighter names from columns, excluding 'category'
 
     for fighter1_name, fighter2_name in itertools.product(
-        fighter_names, df_matchup_plays["category"]
+        fighter_names, df_plays["category"]
     ):
         if fighter1_name == fighter2_name:
             continue  # Skip matchups with the same fighter
@@ -42,14 +43,14 @@ def insert_matchup_data(session, df_matchup_plays, df_matchup_rate):
         fighter1_id = fighter_ids[fighter1_name]
         fighter2_id = fighter_ids[fighter2_name]
 
-        plays = df_matchup_plays.loc[
-            df_matchup_plays["category"] == fighter2_name, fighter1_name
+        plays = df_plays.loc[
+            df_plays["category"] == fighter2_name, fighter1_name
         ].values[0]
-        fighter1_winrate = df_matchup_rate.loc[
-            df_matchup_rate["category"] == fighter2_name, fighter1_name
+        fighter1_winrate = df_winrate.loc[
+            df_winrate["category"] == fighter2_name, fighter1_name
         ].values[0]
-        fighter2_winrate = df_matchup_rate.loc[
-            df_matchup_rate["category"] == fighter1_name, fighter2_name
+        fighter2_winrate = df_winrate.loc[
+            df_winrate["category"] == fighter1_name, fighter2_name
         ].values[0]
 
         plays = int(plays)
@@ -58,7 +59,7 @@ def insert_matchup_data(session, df_matchup_plays, df_matchup_rate):
 
         # Check for existing matchup in either direction
         existing_matchup = (
-            session.query(Matchup)
+            db_session.query(Matchup)
             .filter(
                 (
                     (Matchup.fighter1_id == fighter1_id)
@@ -73,7 +74,7 @@ def insert_matchup_data(session, df_matchup_plays, df_matchup_rate):
         )
 
         if not existing_matchup:
-            session.add(
+            db_session.add(
                 Matchup(
                     fighter1_id=fighter1_id,
                     fighter2_id=fighter2_id,
@@ -83,11 +84,11 @@ def insert_matchup_data(session, df_matchup_plays, df_matchup_rate):
                 )
             )
 
-        session.commit()
+        db_session.commit()
 
 
 if __name__ == "__main__":
-    Session, engine = get_session_engine()
+    SessionLocal, engine = get_session_engine()
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
@@ -108,7 +109,7 @@ if __name__ == "__main__":
         )
     )
 
-    with Session() as session:
+    with SessionLocal() as session:
         print("Inserting fighter data...")
         insert_fighter_data(session, df_fighters)
         print("Inserting matchup data...")

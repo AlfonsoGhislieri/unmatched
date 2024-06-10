@@ -2,8 +2,8 @@ coverage==7.5.3
 factory_boy==3.3.0
 fastapi==0.111.0
 pandas==2.2.2
+psycopg2==2.9.9
 pydantic==1.10.15
 pytest==8.2.2
 python-dotenv==1.0.1
-psycopg2==2.9.9
 SQLAlchemy==2.0.30

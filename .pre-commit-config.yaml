@@ -32,7 +32,7 @@ repos:
         entry: frontend/node_modules/.bin/prettier --write --log-level warn
         language: node
         types: [file]
-        files: '^frontend/.*\.(md|js|tsx|ts)$'
+        files: '^frontend/.*\.(md|js|jsx|tsx|ts)$'
         exclude: '(^backend/|^\.venv/|^frontend/node_modules/)'
 
       - id: eslint

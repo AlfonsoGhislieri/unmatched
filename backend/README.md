@@ -16,6 +16,22 @@ Install pre-commit hook
 If you have missing import errors from pylance select the appropriate interpreter for your the venv environment
 `ctrl+shift+P` --> Python: Select Interpreter
 
+### Troubleshooting issues with missing import errors in VsCode due to venv
+
+Your VsCode / other IDE's might show errors for imports sometimes due the interpreter not being correctly set to match the venv.
+
+If it's not showing up there create `.vscode` folder in root with `settings.json` file inside of it and include:
+`"python.defaultInterpreterPath": "{PATH_TO_VENV_PYTHON}"`
+
+eg: `"python.defaultInterpreterPath": "/Users/example_user/coding/unmatched/backend/.venv/bin/python"`
+
+If you face similar issues with `Pylint` or `mypy` or similar tools add to the settings to allow them to locate the modules:
+
+```
+  "pylint.args": ["--init-hook", "import sys; sys.path.insert(0, './backend/src')"],
+  "mypy-type-checker.args": ["--python-path", "./backend/src"]
+```
+
 # Generating requirements
 
 ```
