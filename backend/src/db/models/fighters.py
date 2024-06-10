@@ -3,7 +3,6 @@ from sqlalchemy import Column, Float, Integer, String
 from .base import Base
 
 
-
 class Fighter(Base):
     __tablename__ = "fighters"
 
