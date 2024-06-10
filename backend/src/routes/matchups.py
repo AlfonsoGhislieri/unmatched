@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from schemas.schemas import MatchupSchema, MatchupDetailSchema
 from db.models.matchups import Matchup
-from db.database import get_db
+from db.dependencies import get_db
 
 router = APIRouter()
 

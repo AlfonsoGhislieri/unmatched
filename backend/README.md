@@ -57,3 +57,8 @@ Then open htmlcov/index.html in your browser
 ```
 fastapi dev src/main.py
 ```
+
+This should start up the backend with hot reloading
+
+View docs at
+`http://127.0.0.1:8000/docs`

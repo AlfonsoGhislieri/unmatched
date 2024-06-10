@@ -8,7 +8,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 
-def get_database():
+# Handles the creation of the database engine and session factory.
+def get_session_engine():
     load_dotenv()
 
     # Get the environment (default to 'dev' if not set)
@@ -20,16 +21,6 @@ def get_database():
         DATABASE_URL = os.getenv('DEV_DATABASE_URL')
 
     engine = create_engine(DATABASE_URL) # if you want to see log of actions add echo=True
-    Session = sessionmaker(bind=engine)
+    SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
     
-    return Session, engine
-
-SessionLocal, engine = get_database()
-
-# Dependency to get DB session
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+    return SessionLocal, engine

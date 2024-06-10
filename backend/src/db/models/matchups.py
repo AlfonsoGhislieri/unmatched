@@ -3,6 +3,7 @@ from .base import Base
 
 class Matchup(Base):
     __tablename__ = 'matchups'
+    
     id = Column(Integer, primary_key=True, autoincrement=True)
     fighter1_id = Column(Integer, ForeignKey('fighters.id'), nullable=False)
     fighter2_id = Column(Integer, ForeignKey('fighters.id'), nullable=False)

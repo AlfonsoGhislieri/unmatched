@@ -1,11 +1,11 @@
 import pytest
 from sqlalchemy.exc import OperationalError
 from sqlalchemy import text
-from db.database import get_database
+from db.database import get_session_engine
 
 @pytest.fixture(scope='module')
 def db_resources():
-    Session, engine = get_database()  
+    Session, engine = get_session_engine()  
     return Session, engine
 
 @pytest.fixture(scope='module')

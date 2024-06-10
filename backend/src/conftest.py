@@ -10,7 +10,6 @@ engine = create_engine(DATABASE_URL)
 
 @pytest.fixture(scope='module')
 def test_engine():
-
     Base.metadata.create_all(engine)
 
     yield engine
@@ -20,7 +19,6 @@ def test_engine():
 
 @pytest.fixture(scope='function')
 def test_session(test_engine):
-
     Session = sessionmaker(bind=test_engine)
     session = Session()
 

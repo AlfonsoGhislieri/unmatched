@@ -7,7 +7,7 @@ import pandas as pd
 from db.models.base import Base
 from db.models.fighters import Fighter
 from db.models.matchups import Matchup
-from db.database import get_database
+from db.database import get_session_engine
 
 # Insert Fighter data
 def insert_fighter_data(session, df_fighters):
@@ -60,7 +60,7 @@ def insert_matchup_data(session, df_matchup_plays, df_matchup_rate):
         session.commit()
 
 if __name__ == "__main__":
-    Session, engine = get_database()
+    Session, engine = get_session_engine()
     Base.metadata.drop_all(engine) 
     Base.metadata.create_all(engine)
 
