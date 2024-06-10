@@ -1,11 +1,12 @@
 import pytest
-from fastapi.testclient import TestClient
+
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
 from db.dependencies import get_db
 from db.models.base import Base
 from factories.factories import BaseFactory
+from fastapi.testclient import TestClient
 from main import app
 
 DATABASE_URL = f"postgresql://dev_user:dev_password@localhost:5432/unmatched_test"

@@ -1,6 +1,5 @@
-from routes.helpers.helpers import normalize_matchup_data
-
 from db.models.matchups import Matchup
+from routes.helpers.helpers import normalize_matchup_data
 
 
 def test_normalize_matchup_data():

@@ -1,8 +1,7 @@
 import pytest
-from sqlalchemy.exc import IntegrityError
-
 from db.models.fighters import Fighter
 from db.models.matchups import Matchup
+from sqlalchemy.exc import IntegrityError
 
 
 def test_create_fighter(test_session):

@@ -1,6 +1,5 @@
-from fastapi.testclient import TestClient
-
 from factories.factories import FighterFactory
+from fastapi.testclient import TestClient
 
 
 def test_read_all_fighters(client: TestClient):

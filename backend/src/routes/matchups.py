@@ -1,12 +1,11 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-
 from db.dependencies import get_db
 from db.models.matchups import Matchup
+from fastapi import APIRouter, Depends, HTTPException
 from routes.helpers.helpers import normalize_matchup_data
 from schemas.schemas import MatchupDetailSchema, MatchupSchema
+from sqlalchemy.orm import Session
 
 router = APIRouter()
 
