@@ -2,6 +2,9 @@ import pytest
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from db.models.base import Base
+from fastapi.testclient import TestClient
+from main import app
+from db.dependencies import get_db
 
 # These fixtures are available for all tests
 
@@ -31,3 +34,9 @@ def test_session(test_engine):
       session.commit()
 
     session.close()
+
+@pytest.fixture(scope='function')
+def client(test_session):
+    app.dependency_overrides[get_db] = lambda: test_session
+    with TestClient(app) as c:
+        yield c
