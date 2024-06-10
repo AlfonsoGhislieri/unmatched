@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
+    rev: v4.6.0
     hooks:
       - id: check-merge-conflict
       - id: check-yaml
@@ -15,11 +15,12 @@ repos:
         exclude: '(^package(-lock)?\.json$|.*/package(-lock)?\.json$)'
 
   - repo: https://github.com/psf/black
-    rev: 23.1a1
+    rev: 24.4.2
     hooks:
       - id: black
 
-  - repo: https://github.com/pre-commit/mirrors-isort
-    rev: v5.9.3
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
     hooks:
       - id: isort
+        name: isort (python)
