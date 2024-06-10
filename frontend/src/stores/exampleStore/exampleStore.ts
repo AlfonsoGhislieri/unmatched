@@ -26,11 +26,11 @@ const useExampleStore = create(
               state.people = state.people.filter((p) => p.name !== name);
             });
           },
-        }),
-      ),
+        })
+      )
     ),
-    { name: 'ExampleStore' },
-  ),
+    { name: 'ExampleStore' }
+  )
 );
 
 export default useExampleStore;

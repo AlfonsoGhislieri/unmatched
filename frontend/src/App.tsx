@@ -1,5 +1,6 @@
 import React from 'react';
 import useExampleStore from './stores/exampleStore/exampleStore';
+import useStore from 'stores/exampleSlicedStore/fighterStore';
 
 const PeopleList: React.FC = () => {
   const people = useExampleStore((state) => state.people);

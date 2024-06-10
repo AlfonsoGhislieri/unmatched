@@ -15,7 +15,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format:style": "prettier --write '**/*.{md,json,js,tsx,ts}'"
   },
   "browserslist": {
     "production": [
@@ -46,6 +47,7 @@
     "eslint-plugin-react": "^7.34.2",
     "eslint-plugin-react-hooks": "^4.6.2",
     "globals": "^15.4.0",
+    "prettier": "^3.3.1",
     "sass": "^1.77.4",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.12.0"
