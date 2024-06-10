@@ -6,6 +6,8 @@ from sqlalchemy.exc import IntegrityError
 
 def test_create_fighter(test_session):
     fighter = Fighter(name="Achilles", plays=100, winrate=50.0)
+    fighter = Fighter(name="Achilles", plays=100, winrate=50.0)
+
     test_session.add(fighter)
     test_session.commit()
 
