@@ -2,10 +2,17 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1
     hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
+      - id: check-merge-conflict
       - id: check-yaml
-      - id: check-added-large-files
+      - id: end-of-file-fixer
+        exclude: '\.csv$'
+      - id: trailing-whitespace
+        exclude: '\.csv$'
+      - id: check-json
+      - id: pretty-format-json
+        args:
+          - --autofix
+        exclude: '(^package(-lock)?\.json$|.*/package(-lock)?\.json$)'
 
   - repo: https://github.com/psf/black
     rev: 23.1a1

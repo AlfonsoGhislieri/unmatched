@@ -15,9 +15,9 @@ export default [
       "react-hooks": reactHooks,
     },
     languageOptions: { globals: { ...globals.browser, ...globals.jest } },
-    rules: { 
+    rules: {
     ...pluginJs.configs.recommended.rules,
-    "react/react-in-jsx-scope": "off",     
+    "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-unused-vars": "off" // duplicated from eslint reccomended rules
   },
     settings: {
