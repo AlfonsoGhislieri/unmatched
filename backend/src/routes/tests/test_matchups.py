@@ -1,98 +1,86 @@
-import pytest
 from fastapi.testclient import TestClient
+from factories.factories import FighterFactory, MatchupFactory
 from sqlalchemy.orm import Session
-from db.models.matchups import Matchup
-from db.models.fighters import Fighter
 
-def test_read_matchups(client: TestClient, test_session: Session):
-    fighter1 = Fighter(name="Fighter 1", plays=10, winrate=50.0)
-    fighter2 = Fighter(name="Fighter 2", plays=20, winrate=60.0)
-    test_session.add_all([fighter1, fighter2])
-    test_session.commit()
+def test_read_matchups(client: TestClient):
+  fighter1 = FighterFactory(name="Fighter 1", plays=10, winrate=50.0)
+  fighter2 = FighterFactory(name="Fighter 2", plays=20, winrate=60.0)
+  fighter3 = FighterFactory(name="Fighter 3", plays=30, winrate=20.0)
 
-    matchup = Matchup(fighter1_id=fighter1.id, fighter2_id=fighter2.id, plays=100, fighter1_winrate=55.0, fighter2_winrate=45.0)
-    test_session.add(matchup)
-    test_session.commit()
-    
-    response = client.get("/matchups/")
-    assert response.status_code == 200
-    matchups = response.json()
-    assert len(matchups) == 1
-    assert matchups[0]["fighter1_id"] == fighter1.id
-    assert matchups[0]["fighter2_id"] == fighter2.id
+  matchup1 = MatchupFactory(fighter1_id=fighter1.id, fighter2_id=fighter2.id, plays=100, fighter1_winrate=55.0, fighter2_winrate=45.0)
+  matchup2 = MatchupFactory(fighter1_id=fighter3.id, fighter2_id=fighter1.id, plays=20, fighter1_winrate=45.0, fighter2_winrate=55.0)
+  
+  response = client.get("/matchups/")
+  assert response.status_code == 200
 
-def test_read_matchup(client: TestClient, test_session: Session):
-    fighter1 = Fighter(name="Fighter 1", plays=10, winrate=50.0)
-    fighter2 = Fighter(name="Fighter 2", plays=20, winrate=60.0)
-    test_session.add_all([fighter1, fighter2])
-    test_session.commit()
-    
-    matchup = Matchup(fighter1_id=fighter1.id, fighter2_id=fighter2.id, plays=100, fighter1_winrate=55.0, fighter2_winrate=45.0)
-    test_session.add(matchup)
-    test_session.commit()
+  matchups = response.json()
+  assert len(matchups) == 2
 
-    response = client.get(f"/matchups/{matchup.id}")
-    assert response.status_code == 200
-    matchup_data = response.json()
-    assert matchup_data["fighter1_id"] == fighter1.id
-    assert matchup_data["fighter2_id"] == fighter2.id
+  assert matchups[0]["fighter1_id"] == fighter1.id
+  assert matchups[0]["fighter2_id"] == fighter2.id
+  assert matchups[0]["plays"] == matchup1.plays
+  assert matchups[0]["fighter1_winrate"] == matchup1.fighter1_winrate
+  assert matchups[0]["fighter2_winrate"] == matchup1.fighter2_winrate
 
-    # Test a non-existent matchup
-    response = client.get("/matchups/999")
-    assert response.status_code == 404
-    assert response.json()["detail"] == "Matchup not found"
+  assert matchups[1]["fighter1_id"] == fighter3.id
+  assert matchups[1]["fighter2_id"] == fighter1.id
+  assert matchups[1]["plays"] == matchup2.plays
+  assert matchups[1]["fighter1_winrate"] == matchup2.fighter1_winrate
+  assert matchups[1]["fighter2_winrate"] == matchup2.fighter2_winrate
+
+def test_read_matchup(client: TestClient):
+  fighter1 = FighterFactory(name="Fighter 1", plays=10, winrate=50.0)
+  fighter2 = FighterFactory(name="Fighter 2", plays=20, winrate=60.0)
+
+  matchup = MatchupFactory(fighter1_id=fighter1.id, fighter2_id=fighter2.id, plays=100, fighter1_winrate=55.0, fighter2_winrate=45.0)
+
+  response = client.get(f"/matchups/{matchup.id}")
+  assert response.status_code == 200
+
+  matchup_data = response.json()
+  assert matchup_data["fighter1_id"] == fighter1.id
+  assert matchup_data["fighter2_id"] == fighter2.id
+  assert matchup_data["plays"] == matchup.plays
+  assert matchup_data["fighter1_winrate"] == matchup.fighter1_winrate
+  assert matchup_data["fighter2_winrate"] == matchup.fighter2_winrate
+
+  # Test a non-existent matchup
+  response = client.get("/matchups/999")
+  assert response.status_code == 404
+  assert response.json()["detail"] == "Matchup not found"
 
 def test_read_matchups_by_fighter(client: TestClient, test_session: Session):
-    fighter1 = Fighter(name="Fighter 1", plays=10, winrate=50.0)
-    fighter2 = Fighter(name="Fighter 2", plays=20, winrate=60.0)
-    fighter3 = Fighter(name="Fighter 3", plays=30, winrate=70.0)
-    fighter4 = Fighter(name="Fighter 4", plays=40, winrate=80.0)  # This fighter will not be used
-    test_session.add_all([fighter1, fighter2, fighter3, fighter4])
-    test_session.commit()
+  fighter1 = FighterFactory(name="Fighter 1", plays=10, winrate=50.0)
+  fighter2 = FighterFactory(name="Fighter 2", plays=20, winrate=60.0)
+  fighter3 = FighterFactory(name="Fighter 3", plays=30, winrate=70.0)
+  fighter4 = FighterFactory(name="Fighter 4", plays=40, winrate=80.0)  # This fighter will not be used
 
-    matchup1 = Matchup(fighter1_id=fighter1.id, fighter2_id=fighter2.id, plays=100, fighter1_winrate=55.0, fighter2_winrate=45.0)
-    matchup2 = Matchup(fighter1_id=fighter1.id, fighter2_id=fighter3.id, plays=200, fighter1_winrate=65.0, fighter2_winrate=35.0)
-    matchup3 = Matchup(fighter1_id=fighter2.id, fighter2_id=fighter3.id, plays=300, fighter1_winrate=75.0, fighter2_winrate=25.0)
-    test_session.add_all([matchup1, matchup2, matchup3])
-    test_session.commit()
+  MatchupFactory(fighter1_id=fighter1.id, fighter2_id=fighter2.id, plays=100, fighter1_winrate=55.0, fighter2_winrate=45.0)
+  MatchupFactory(fighter1_id=fighter3.id, fighter2_id=fighter1.id, plays=200, fighter1_winrate=65.0, fighter2_winrate=35.0)
+  MatchupFactory(fighter1_id=fighter2.id, fighter2_id=fighter3.id, plays=300, fighter1_winrate=75.0, fighter2_winrate=25.0)
 
-    # Test for fighter1
-    response = client.get(f"/matchups/fighter/{fighter1.id}")
-    assert response.status_code == 200
-    matchups = response.json()
-    assert len(matchups) == 2
-    
-    # Validate matchups for fighter1
-    matchup_details = [
-        (matchup["fighter_id"], matchup["opponent_id"], matchup["plays"], matchup["winrate"])
-        for matchup in matchups
-    ]
-    assert (fighter1.id, fighter2.id, 100, 55.0) in matchup_details
-    assert (fighter1.id, fighter3.id, 200, 65.0) in matchup_details
+  # Test for fighter1
+  response = client.get(f"/matchups/fighter/{fighter1.id}")
+  assert response.status_code == 200
+  matchups = response.json()
+  assert len(matchups) == 2
 
-    # Test for fighter2
-    response = client.get(f"/matchups/fighter/{fighter2.id}")
-    assert response.status_code == 200
-    matchups = response.json()
-    assert len(matchups) == 2
-    
-    # Validate matchups for fighter2
-    matchup_details = [
-        (matchup["fighter_id"], matchup["opponent_id"], matchup["plays"], matchup["winrate"])
-        for matchup in matchups
-    ]
-    assert (fighter2.id, fighter1.id, 100, 45.0) in matchup_details
-    assert (fighter2.id, fighter3.id, 300, 75.0) in matchup_details
+  assert matchups[0]["fighter_id"] == fighter1.id
+  assert matchups[0]["opponent_id"] == fighter2.id
+  assert matchups[0]["plays"] == 100
+  assert matchups[0]["winrate"] == 55.0
 
-    # Test a non-existent fighter
-    response = client.get("/matchups/fighter/999")
-    assert response.status_code == 404
-    assert response.json()["detail"] == "Matchups not found for the given fighter"
+  assert matchups[1]["fighter_id"] == fighter1.id
+  assert matchups[1]["opponent_id"] == fighter3.id
+  assert matchups[1]["plays"] == 200
+  assert matchups[1]["winrate"] == 35.0
 
-    # Test for a fighter with no matchups (fighter4)
-    response = client.get(f"/matchups/fighter/{fighter4.id}")
-    assert response.status_code == 404
-    assert response.json()["detail"] == "Matchups not found for the given fighter"
+  # Test a non-existent fighter
+  response = client.get("/matchups/fighter/999")
+  assert response.status_code == 404
+  assert response.json()["detail"] == "Matchups not found for the given fighter"
 
-
-
+  # Test for a fighter with no matchups (fighter4)
+  response = client.get(f"/matchups/fighter/{fighter4.id}")
+  assert response.status_code == 404
+  assert response.json()["detail"] == "Matchups not found for the given fighter"

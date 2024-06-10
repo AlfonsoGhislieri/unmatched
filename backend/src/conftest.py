@@ -5,38 +5,40 @@ from db.models.base import Base
 from fastapi.testclient import TestClient
 from main import app
 from db.dependencies import get_db
-
-# These fixtures are available for all tests
+from factories.factories import BaseFactory, FighterFactory, MatchupFactory
 
 DATABASE_URL = f'postgresql://dev_user:dev_password@localhost:5432/unmatched_test'
 engine = create_engine(DATABASE_URL)
 
 @pytest.fixture(scope='module')
 def test_engine():
-    Base.metadata.create_all(engine)
+  Base.metadata.create_all(engine)
 
-    yield engine
+  yield engine
 
-    Base.metadata.drop_all(engine)
+  Base.metadata.drop_all(engine)
 
 
 @pytest.fixture(scope='function')
 def test_session(test_engine):
-    Session = sessionmaker(bind=test_engine)
-    session = Session()
+  Session = sessionmaker(bind=test_engine)
+  session = Session()
+  BaseFactory._meta.sqlalchemy_session_factory = lambda: session
+  FighterFactory._meta.sqlalchemy_session_factory = lambda: session
+  MatchupFactory._meta.sqlalchemy_session_factory = lambda: session
 
-    yield session
+  yield session
 
-    session.rollback()
+  session.rollback()
 
-    for table in reversed(Base.metadata.sorted_tables):
-      session.execute(text(f'TRUNCATE {table.name} CASCADE;'))
-      session.commit()
+  for table in reversed(Base.metadata.sorted_tables):
+    session.execute(text(f'TRUNCATE {table.name} CASCADE;'))
+    session.commit()
 
-    session.close()
+  session.close()
 
 @pytest.fixture(scope='function')
 def client(test_session):
-    app.dependency_overrides[get_db] = lambda: test_session
-    with TestClient(app) as c:
-        yield c
+  app.dependency_overrides[get_db] = lambda: test_session
+  with TestClient(app) as c:
+      yield c

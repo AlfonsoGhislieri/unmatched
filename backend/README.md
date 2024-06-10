@@ -1,5 +1,7 @@
 # Setting up python virtual environment
 
+Change to the backend directory `cd backend``
+
 Python virtual environment (venv) is a tool that helps manage dependencies for a project by creating an isolated environment with its own installed packages. This ensures that dependencies for different projects do not interfere with each other.
 
 ```
