@@ -1,9 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
+
 from schemas.schemas import MatchupSchema, MatchupDetailSchema
 from db.models.matchups import Matchup
 from db.dependencies import get_db
+from routes.helpers.helpers import normalize_matchup_data
 
 router = APIRouter()
 
@@ -29,15 +31,6 @@ def read_matchups_by_fighter(fighter_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Matchups not found for the given fighter")
 
     # normalise data for consumption on frontend
-    detailed_matchups = [
-        MatchupDetailSchema(
-            matchup_id=matchup.id,
-            fighter_id=fighter_id,
-            opponent_id=matchup.fighter2_id if matchup.fighter1_id == fighter_id else matchup.fighter1_id,
-            plays=matchup.plays,
-            winrate=matchup.fighter1_winrate if matchup.fighter1_id == fighter_id else matchup.fighter2_winrate,
-        )
-        for matchup in matchups
-    ]
+    detailed_matchups = normalize_matchup_data(matchups, fighter_id)
 
     return detailed_matchups
