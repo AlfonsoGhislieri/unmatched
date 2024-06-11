@@ -1,9 +1,9 @@
 import pytest
-from db.dependencies import get_db
 from db.models.base import Base
 from factories.b_factory import BaseFactory
 from fastapi.testclient import TestClient
 from main import app
+from routes.dependencies import get_db
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 

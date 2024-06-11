@@ -1,8 +1,8 @@
 from typing import List
 
-from db.dependencies import get_db
 from db.models.fighters import Fighter
 from fastapi import APIRouter, Depends, HTTPException
+from routes.dependencies import get_db
 from schemas.schemas import FighterSchema
 from sqlalchemy.orm import Session
 
