@@ -1,0 +1,23 @@
+.character-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 16px;
+    gap: 16px;
+  }
+
+.character-tile {
+    width: 100%;
+    max-width: 250px;
+    aspect-ratio: 1/1;
+    background-color: black;
+    border-radius: 50%;
+    display: inline-block;
+    img {
+        width: 95%;
+        height: 95%;
+        transform: translateX(2.5%) translateY(2.5%);
+        border-radius: 50%;
+        border-color: black;
+    }
+}

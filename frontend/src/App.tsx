@@ -1,4 +1,4 @@
-import CharacterTile from 'CharacterTile';
+import { CharacterGrid } from 'CharacterTile';
 import React from 'react';
 import useExampleStore from './stores/exampleStore/exampleStore';
 
@@ -31,9 +31,6 @@ const PeopleList: React.FC = () => {
           </li>
         ))}
       </ul>
-      <CharacterTile name='OdaNobunaga' />
-      <CharacterTile name='LittleRedRidingHood' />
-      <CharacterTile name='Houdini' />
     </div>
   );
 };
