@@ -1,9 +1,10 @@
-import { Route, Routes, Link } from 'react-router-dom';
-import Home from './pages/Home';
+import { Link, Route, Routes } from 'react-router-dom';
+
 import About from './pages/About';
-import NoPage from 'pages/NoPage';
-import Heroes from 'pages/Heroes';
 import Hero from 'pages/Hero';
+import Heroes from 'pages/Heroes';
+import Home from './pages/Home';
+import NoPage from 'pages/NoPage';
 
 function App() {
   return (
@@ -24,8 +25,9 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='about' element={<About />} />
-        <Route path='heroes' element={<Heroes />} />
-        <Route path='heroes/:heroId' element={<Hero />} />
+        <Route path='heroes' element={<Heroes />}>
+          <Route path=':heroId' element={<Hero />} />
+        </Route>
         <Route path='*' element={<NoPage />} />
       </Routes>
     </div>

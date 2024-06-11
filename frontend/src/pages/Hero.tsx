@@ -1,7 +1,12 @@
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
 const Hero = () => {
   const { heroId } = useParams();
+  const heroList = ['houdini', 'superman', 'batman']; // Example hero names
+
+  if (heroId && !heroList.includes(heroId)) {
+    return <Navigate to='/heroes' />;
+  }
 
   return (
     <div>
