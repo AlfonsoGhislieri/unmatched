@@ -1,5 +1,7 @@
 import { Link, Outlet } from 'react-router-dom';
 
+import { CharacterGrid } from 'CharacterTile';
+
 const Heroes = () => {
   const heroList = ['houdini', 'superman', 'batman'];
   return (
@@ -12,6 +14,7 @@ const Heroes = () => {
           </li>
         ))}
       </ul>
+      <CharacterGrid />
       <Outlet />
     </div>
   );

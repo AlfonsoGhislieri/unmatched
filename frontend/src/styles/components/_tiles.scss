@@ -19,5 +19,7 @@
         transform: translateX(2.5%) translateY(2.5%);
         border-radius: 50%;
         border-color: black;
+        -webkit-user-drag: none;
+        user-select: none;
     }
 }

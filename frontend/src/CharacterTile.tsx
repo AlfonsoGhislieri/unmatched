@@ -17,11 +17,16 @@ interface CharacterTileProps {
 
 function CharacterTile(props: CharacterTileProps) {
   const charName = props.name as keyof typeof tile;
-  return (
-    <div className='character-tile'>
-      <img src={tile[charName]}></img>
-    </div>
-  );
+  console.log(charName);
+  if (heroes.includes(charName)) {
+    return (
+      <div className='character-tile'>
+        <img src={tile[charName]}></img>
+      </div>
+    );
+  } else {
+    return null;
+  }
 }
 
 export { CharacterTile, CharacterGrid };
