@@ -28,17 +28,16 @@ def insert_fighter_data(db_session, df):
 
 
 def insert_matchup_data(db_session, df_plays, df_winrate):
+    # Create a dictionary to map fighter names to their IDs
     fighter_ids = {
         fighter.name: fighter.id for fighter in db_session.query(Fighter).all()
     }
 
-    fighter_names = df_plays.columns[
-        1:
-    ]  # Get fighter names from columns, excluding 'category'
+    # Get fighter names from the 'category' column
+    fighter_names = df_plays["category"].tolist()
 
-    for fighter1_name, fighter2_name in itertools.product(
-        fighter_names, df_plays["category"]
-    ):
+    # Iterate over all combinations of fighter pairs
+    for fighter1_name, fighter2_name in itertools.product(fighter_names, repeat=2):
         if fighter1_name == fighter2_name:
             continue  # Skip matchups with the same fighter
 
@@ -86,7 +85,7 @@ def insert_matchup_data(db_session, df_plays, df_winrate):
                 )
             )
 
-        db_session.commit()
+    db_session.commit()
 
 
 if __name__ == "__main__":

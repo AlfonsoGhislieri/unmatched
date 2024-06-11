@@ -25,20 +25,6 @@ repos:
       - id: isort
         name: isort
 
-  - repo: https://github.com/PyCQA/pylint
-    rev: v3.1.0
-    hooks:
-      - id: pylint
-        name: pylint
-        args:
-          - --disable=R,C,W,I
-        types:
-          - python
-        exclude: >
-          (?x)(
-            /node_modules/
-          )
-
   - repo: local
     hooks:
       - id: prettier
@@ -53,3 +39,16 @@ repos:
         entry: bash -c 'cd frontend && yarn run format:lint'
         language: system
         pass_filenames: false # makes command run just once
+
+      - id: pylint
+        name: pylint
+        entry: bash -c 'cd backend/src python3 -m pylint'
+        language: system
+        types: [python]
+        args:
+          - --disable=R,C,W,I
+        files: ^(backend/src)/
+        exclude: >
+          (?x)(
+            /node_modules/
+          )
