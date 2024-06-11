@@ -2,6 +2,8 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
+      - id: no-commit-to-branch
+        args: ['--branch', 'main']
       - id: check-merge-conflict
       - id: check-yaml
       - id: end-of-file-fixer
@@ -39,6 +41,7 @@ repos:
         entry: bash -c 'cd frontend && yarn run format:lint'
         language: system
         pass_filenames: false # makes command run just once
+        files: ^(frontend/)/
 
       - id: pylint
         name: pylint
