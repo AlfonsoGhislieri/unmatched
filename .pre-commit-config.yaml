@@ -48,7 +48,3 @@ repos:
         args:
           - --disable=R,C,W,I
         files: ^(backend/src)/
-        exclude: >
-          (?x)(
-            /node_modules/
-          )

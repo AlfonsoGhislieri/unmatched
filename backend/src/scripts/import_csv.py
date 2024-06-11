@@ -25,8 +25,6 @@ def insert_fighter_data(db_session, df):
 
 
 # Insert matchup data
-
-
 def insert_matchup_data(db_session, df_plays, df_winrate):
     # Create a dictionary to map fighter names to their IDs
     fighter_ids = {
