@@ -1,51 +1,34 @@
 import pytest
+from db.models.deck import Deck
 from db.models.fighters import Fighter
 from db.models.matchups import Matchup
+from factories.b_factory import DeckFactory, FighterFactory, MatchupFactory
 from sqlalchemy.exc import IntegrityError
 
 
 def test_create_fighter(test_session):
-    fighter = Fighter(name="Achilles", plays=100, winrate=50.0)
-    fighter = Fighter(name="Achilles", plays=100, winrate=50.0)
-
-    test_session.add(fighter)
-    test_session.commit()
+    fighter = FighterFactory()
 
     # Retrieve the fighter from the database
-    retrieved_fighter = test_session.query(Fighter).filter_by(name="Achilles").first()
+    retrieved_fighter = test_session.query(Fighter).filter_by(name=fighter.name).first()
     assert retrieved_fighter is not None
-    assert retrieved_fighter.name == "Achilles"
-    assert retrieved_fighter.plays == 100
-    assert retrieved_fighter.winrate == 50.0
+    assert retrieved_fighter.name == fighter.name
+    assert retrieved_fighter.plays == fighter.plays
+    assert retrieved_fighter.winrate == fighter.winrate
 
 
-def test_unique_fighter_name(test_session):
-    fighter1 = Fighter(name="Achilles", plays=100, winrate=50.0)
-    fighter2 = Fighter(name="Achilles", plays=150, winrate=60.0)
-    test_session.add(fighter1)
-    test_session.commit()
+def test_unique_fighter_name():
+    FighterFactory(name="Achilles")
 
     with pytest.raises(IntegrityError):
-        test_session.add(fighter2)
-        test_session.commit()
+        FighterFactory(name="Achilles")
 
 
 def test_create_matchup(test_session):
-    fighter1 = Fighter(name="Achilles", plays=100, winrate=50.0)
-    fighter2 = Fighter(name="Alice", plays=150, winrate=60.0)
-    test_session.add(fighter1)
-    test_session.add(fighter2)
-    test_session.commit()
+    fighter1 = FighterFactory()
+    fighter2 = FighterFactory()
 
-    matchup = Matchup(
-        fighter1_id=fighter1.id,
-        fighter2_id=fighter2.id,
-        plays=66,
-        fighter1_winrate=70,
-        fighter2_winrate=30,
-    )
-    test_session.add(matchup)
-    test_session.commit()
+    matchup = MatchupFactory(fighter1_id=fighter1.id, fighter2_id=fighter2.id)
 
     retrieved_matchup = (
         test_session.query(Matchup)
@@ -53,34 +36,38 @@ def test_create_matchup(test_session):
         .first()
     )
     assert retrieved_matchup is not None
-    assert retrieved_matchup.plays == 66
-    assert retrieved_matchup.fighter1_winrate == 70
+    assert retrieved_matchup.plays == matchup.plays
+    assert retrieved_matchup.fighter1_winrate == matchup.fighter1_winrate
 
 
-def test_unique_matchup(test_session):
-    fighter1 = Fighter(name="Achilles", plays=100, winrate=50.0)
-    fighter2 = Fighter(name="Alice", plays=150, winrate=60.0)
-    test_session.add(fighter1)
-    test_session.add(fighter2)
-    test_session.commit()
+def test_unique_matchup():
+    fighter1 = FighterFactory()
+    fighter2 = FighterFactory()
 
-    matchup1 = Matchup(
-        fighter1_id=fighter1.id,
-        fighter2_id=fighter2.id,
-        plays=66,
-        fighter1_winrate=70,
-        fighter2_winrate=30,
-    )
-    matchup2 = Matchup(
-        fighter1_id=fighter1.id,
-        fighter2_id=fighter2.id,
-        plays=77,
-        fighter1_winrate=80,
-        fighter2_winrate=20,
-    )
-    test_session.add(matchup1)
-    test_session.commit()
+    MatchupFactory(fighter1_id=fighter1.id, fighter2_id=fighter2.id)
 
     with pytest.raises(IntegrityError):
-        test_session.add(matchup2)
-        test_session.commit()
+        MatchupFactory(fighter1_id=fighter1.id, fighter2_id=fighter2.id)
+
+
+def test_create_deck(test_session):
+    new_deck = DeckFactory()
+
+    # Query the deck
+    deck = test_session.query(Deck).filter_by(deck_name=new_deck.deck_name).first()
+
+    assert deck is not None
+    assert deck.unique_attack == new_deck.unique_attack
+    assert deck.unique_versatile == new_deck.unique_versatile
+    assert deck.unique_defense == new_deck.unique_defense
+    assert deck.unique_scheme == new_deck.unique_scheme
+    assert deck.total_attack == new_deck.total_attack
+    assert deck.total_versatile == new_deck.total_versatile
+    assert deck.total_defense == new_deck.total_defense
+    assert deck.total_scheme == new_deck.total_scheme
+    assert deck.total_value_attack == new_deck.total_value_attack
+    assert deck.total_value_versatile == new_deck.total_value_versatile
+    assert deck.total_value_defense == new_deck.total_value_defense
+    assert deck.set == new_deck.set
+    assert deck.special_ability_description == new_deck.special_ability_description
+    assert deck.notes == new_deck.notes
