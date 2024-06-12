@@ -4,8 +4,6 @@ from pydantic import BaseModel  # pylint: disable=E0611
 class FighterSchema(BaseModel):
     id: int
     name: str
-    plays: int
-    winrate: float
 
     class Config:
         orm_mode = True

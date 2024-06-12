@@ -29,7 +29,5 @@ class Fighter(Base):
     movement = Column(Integer, nullable=False)
     total_fighters = Column(Integer, nullable=False)
     deck_id = Column(Integer, ForeignKey("decks.id"), nullable=False)
-    plays = Column(Integer, nullable=False)
-    winrate = Column(Float, nullable=False)
 
     deck = relationship("Deck", back_populates="fighter")

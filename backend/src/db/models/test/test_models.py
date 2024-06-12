@@ -13,8 +13,6 @@ def test_create_fighter(test_session):
     retrieved_fighter = test_session.query(Fighter).filter_by(name=fighter.name).first()
     assert retrieved_fighter is not None
     assert retrieved_fighter.name == fighter.name
-    assert retrieved_fighter.plays == fighter.plays
-    assert retrieved_fighter.winrate == fighter.winrate
 
 
 def test_unique_fighter_name():

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Index, Integer, UniqueConstraint
+from sqlalchemy import Column, Float, ForeignKey, Index, Integer, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from .base import Base
@@ -11,8 +11,8 @@ class Matchup(Base):
     deck1_id = Column(Integer, ForeignKey("decks.id"), nullable=False)
     deck2_id = Column(Integer, ForeignKey("decks.id"), nullable=False)
     plays = Column(Integer, nullable=False)
-    deck1_winrate = Column(Integer, nullable=False)
-    deck2_winrate = Column(Integer, nullable=False)
+    deck1_winrate = Column(Float, nullable=False)
+    deck2_winrate = Column(Float, nullable=False)
 
     deck1 = relationship(
         "Deck", foreign_keys=[deck1_id], back_populates="matchups_deck1"

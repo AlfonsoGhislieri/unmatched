@@ -34,6 +34,8 @@ class DeckFactory(BaseFactory):
     )
     special_ability_description = factory.Faker("paragraph")
     notes = factory.Faker("paragraph")
+    plays = factory.Faker("random_int", min=1, max=1000)
+    winrate = factory.Faker("pyfloat", positive=True, max_value=100)
 
 
 class FighterFactory(BaseFactory):
@@ -51,8 +53,6 @@ class FighterFactory(BaseFactory):
     )
     movement = factory.Faker("random_int", min=1, max=10)
     total_fighters = factory.Faker("random_int", min=1, max=5)
-    plays = factory.Faker("random_int", min=1, max=1000)
-    winrate = factory.Faker("pyfloat", positive=True, max_value=100)
 
 
 class MatchupFactory(BaseFactory):

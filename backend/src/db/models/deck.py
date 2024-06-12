@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text
+from sqlalchemy import Column, Float, Integer, String, Text
 from sqlalchemy.orm import relationship
 
 from .base import Base
@@ -24,6 +24,8 @@ class Deck(Base):
     special_ability_name = Column(String, nullable=True)
     special_ability_description = Column(Text, nullable=True)
     notes = Column(Text, nullable=True)
+    plays = Column(Integer, nullable=False)
+    winrate = Column(Float, nullable=False)
 
     fighter = relationship("Fighter", back_populates="deck")
     matchups_deck1 = relationship(
