@@ -40,10 +40,7 @@ class FighterFactory(BaseFactory):
     class Meta:
         model = Fighter
 
-    @factory.lazy_attribute
-    def deck_id(self):
-        return DeckFactory().id
-
+    deck = factory.SubFactory(DeckFactory)
     name = factory.Faker("name")
     starting_hp = factory.Faker("random_int", min=1, max=100)
     range_type = factory.Faker(
@@ -62,14 +59,8 @@ class MatchupFactory(BaseFactory):
     class Meta:
         model = Matchup
 
-    @factory.lazy_attribute
-    def fighter1_id(self):
-        return FighterFactory().id
-
-    @factory.lazy_attribute
-    def fighter2_id(self):
-        return FighterFactory().id
-
+    deck1 = factory.SubFactory(DeckFactory)
+    deck2 = factory.SubFactory(DeckFactory)
     plays = factory.Faker("random_int", min=1, max=1000)
-    fighter1_winrate = factory.Faker("pyfloat", positive=True, max_value=100)
-    fighter2_winrate = factory.Faker("pyfloat", positive=True, max_value=100)
+    deck1_winrate = factory.Faker("pyfloat", positive=True, max_value=100)
+    deck2_winrate = factory.Faker("pyfloat", positive=True, max_value=100)

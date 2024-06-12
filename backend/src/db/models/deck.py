@@ -26,3 +26,9 @@ class Deck(Base):
     notes = Column(Text, nullable=True)
 
     fighter = relationship("Fighter", back_populates="deck")
+    matchups_deck1 = relationship(
+        "Matchup", foreign_keys="[Matchup.deck1_id]", back_populates="deck1"
+    )
+    matchups_deck2 = relationship(
+        "Matchup", foreign_keys="[Matchup.deck2_id]", back_populates="deck2"
+    )

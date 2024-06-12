@@ -13,11 +13,11 @@ class FighterSchema(BaseModel):
 
 class MatchupSchema(BaseModel):
     id: int
-    fighter1_id: int
-    fighter2_id: int
+    deck1_id: int
+    deck2_id: int
     plays: int
-    fighter1_winrate: int
-    fighter2_winrate: int
+    deck1_winrate: int
+    deck2_winrate: int
 
     class Config:
         orm_mode = True
@@ -25,7 +25,7 @@ class MatchupSchema(BaseModel):
 
 class MatchupDetailSchema(BaseModel):
     matchup_id: int
-    fighter_id: int
+    deck_id: int
     opponent_id: int
     plays: int
     winrate: float

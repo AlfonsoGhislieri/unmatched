@@ -25,29 +25,30 @@ def test_unique_fighter_name():
 
 
 def test_create_matchup(test_session):
-    fighter1 = FighterFactory()
-    fighter2 = FighterFactory()
+    deck1 = DeckFactory()
+    deck2 = DeckFactory()
 
-    matchup = MatchupFactory(fighter1_id=fighter1.id, fighter2_id=fighter2.id)
+    matchup = MatchupFactory(deck1=deck1, deck2=deck2)
 
     retrieved_matchup = (
         test_session.query(Matchup)
-        .filter_by(fighter1_id=fighter1.id, fighter2_id=fighter2.id)
+        .filter_by(deck1_id=deck1.id, deck2_id=deck2.id)
         .first()
     )
     assert retrieved_matchup is not None
     assert retrieved_matchup.plays == matchup.plays
-    assert retrieved_matchup.fighter1_winrate == matchup.fighter1_winrate
+    assert retrieved_matchup.deck1_winrate == matchup.deck1_winrate
+    assert retrieved_matchup.deck2_winrate == matchup.deck2_winrate
 
 
 def test_unique_matchup():
-    fighter1 = FighterFactory()
-    fighter2 = FighterFactory()
+    deck1 = DeckFactory()
+    deck2 = DeckFactory()
 
-    MatchupFactory(fighter1_id=fighter1.id, fighter2_id=fighter2.id)
+    MatchupFactory(deck1=deck1, deck2=deck2)
 
     with pytest.raises(IntegrityError):
-        MatchupFactory(fighter1_id=fighter1.id, fighter2_id=fighter2.id)
+        MatchupFactory(deck1=deck1, deck2=deck2)
 
 
 def test_create_deck(test_session):
