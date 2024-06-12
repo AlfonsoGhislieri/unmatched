@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Text
+from sqlalchemy.orm import relationship
 
 from .base import Base
 
@@ -23,3 +24,5 @@ class Deck(Base):
     special_ability_name = Column(String, nullable=True)
     special_ability_description = Column(Text, nullable=True)
     notes = Column(Text, nullable=True)
+
+    fighter = relationship("Fighter", back_populates="deck")

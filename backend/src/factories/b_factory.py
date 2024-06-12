@@ -1,6 +1,6 @@
 import factory
 from db.models.deck import Deck
-from db.models.fighters import Fighter
+from db.models.fighters import Fighter, FighterType, RangeType
 from db.models.matchups import Matchup
 from factory.alchemy import SQLAlchemyModelFactory
 
@@ -10,26 +10,6 @@ class BaseFactory(SQLAlchemyModelFactory):
         abstract = True
         sqlalchemy_session = None
         sqlalchemy_session_persistence = "commit"
-
-
-class FighterFactory(BaseFactory):
-    class Meta:
-        model = Fighter
-
-    name = factory.Faker("name")
-    plays = factory.Faker("random_int", min=1, max=100)
-    winrate = factory.Faker("pyfloat", positive=True, max_value=100)
-
-
-class MatchupFactory(BaseFactory):
-    class Meta:
-        model = Matchup
-
-    fighter1_id = factory.SubFactory(FighterFactory)
-    fighter2_id = factory.SubFactory(FighterFactory)
-    plays = factory.Faker("random_int", min=1, max=1000)
-    fighter1_winrate = factory.Faker("pyfloat", positive=True, max_value=100)
-    fighter2_winrate = factory.Faker("pyfloat", positive=True, max_value=100)
 
 
 class DeckFactory(BaseFactory):
@@ -54,3 +34,42 @@ class DeckFactory(BaseFactory):
     )
     special_ability_description = factory.Faker("paragraph")
     notes = factory.Faker("paragraph")
+
+
+class FighterFactory(BaseFactory):
+    class Meta:
+        model = Fighter
+
+    @factory.lazy_attribute
+    def deck_id(self):
+        return DeckFactory().id
+
+    name = factory.Faker("name")
+    starting_hp = factory.Faker("random_int", min=1, max=100)
+    range_type = factory.Faker(
+        "random_element", elements=[RangeType.RANGED, RangeType.MELEE]
+    )
+    fighter_type = factory.Faker(
+        "random_element", elements=[FighterType.HERO, FighterType.SIDEKICK]
+    )
+    movement = factory.Faker("random_int", min=1, max=10)
+    total_fighters = factory.Faker("random_int", min=1, max=5)
+    plays = factory.Faker("random_int", min=1, max=1000)
+    winrate = factory.Faker("pyfloat", positive=True, max_value=100)
+
+
+class MatchupFactory(BaseFactory):
+    class Meta:
+        model = Matchup
+
+    @factory.lazy_attribute
+    def fighter1_id(self):
+        return FighterFactory().id
+
+    @factory.lazy_attribute
+    def fighter2_id(self):
+        return FighterFactory().id
+
+    plays = factory.Faker("random_int", min=1, max=1000)
+    fighter1_winrate = factory.Faker("pyfloat", positive=True, max_value=100)
+    fighter2_winrate = factory.Faker("pyfloat", positive=True, max_value=100)
