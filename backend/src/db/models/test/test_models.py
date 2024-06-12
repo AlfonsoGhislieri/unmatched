@@ -54,9 +54,10 @@ def test_create_deck(test_session):
     new_deck = DeckFactory()
 
     # Query the deck
-    deck = test_session.query(Deck).filter_by(deck_name=new_deck.deck_name).first()
+    deck = test_session.query(Deck).filter_by(id=new_deck.id).first()
 
     assert deck is not None
+    assert deck.name == new_deck.name
     assert deck.unique_attack == new_deck.unique_attack
     assert deck.unique_versatile == new_deck.unique_versatile
     assert deck.unique_defense == new_deck.unique_defense
@@ -71,3 +72,10 @@ def test_create_deck(test_session):
     assert deck.set == new_deck.set
     assert deck.special_ability_description == new_deck.special_ability_description
     assert deck.notes == new_deck.notes
+
+
+def test_deck_unique():
+    DeckFactory(name="Alice")
+
+    with pytest.raises(IntegrityError):
+        DeckFactory(name="Alice")

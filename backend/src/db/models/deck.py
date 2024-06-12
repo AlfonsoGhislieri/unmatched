@@ -7,7 +7,7 @@ class Deck(Base):
     __tablename__ = "decks"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    deck_name = Column(String, nullable=False, unique=True, index=True)
+    name = Column(String, nullable=False, unique=True, index=True)
     unique_attack = Column(Integer, nullable=False)
     unique_versatile = Column(Integer, nullable=False)
     unique_defense = Column(Integer, nullable=False)

@@ -36,7 +36,7 @@ class DeckFactory(BaseFactory):
     class Meta:
         model = Deck
 
-    deck_name = factory.Faker("word")
+    name = factory.Faker("word")
     unique_attack = factory.Faker("random_int", min=1, max=10)
     unique_versatile = factory.Faker("random_int", min=1, max=10)
     unique_defense = factory.Faker("random_int", min=1, max=10)
