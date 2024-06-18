@@ -20,6 +20,6 @@ def get_session_engine():
     engine = create_engine(
         DATABASE_URL
     )  # if you want to see log of actions add echo=True
-    session_local = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+    session_local = sessionmaker(bind=engine, autoflush=True, autocommit=False)
 
     return session_local, engine

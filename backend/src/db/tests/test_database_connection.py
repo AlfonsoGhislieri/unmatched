@@ -29,9 +29,12 @@ def session(db_resources):
 
 def test_database_connection(session):
     # Test query to check the connection
-    result = session.execute(text("SELECT 'Hello, world!'"))
-    for row in result:
-        assert row[0] == "Hello, world!"
+    try:
+        result = session.execute(text("SELECT 'Hello, world!'"))
+        for row in result:
+            assert row[0] == "Hello, world!"
+    except OperationalError as e:
+        pytest.fail(f"Unable to execute the query: {e}")
 
 
 def test_engine_connection(db_resources):
