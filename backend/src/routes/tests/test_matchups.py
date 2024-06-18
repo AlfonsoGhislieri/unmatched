@@ -1,92 +1,10 @@
-import pytest
-from db.models.deck import Deck
-from db.models.fighters import Fighter
-from db.models.matchups import Matchup
-from factories.b_factory import DeckFactory, FighterFactory, MatchupFactory
 from fastapi.testclient import TestClient
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-
-def test_create_fighter(test_session: Session):
-    fighter = FighterFactory()
-
-    # Retrieve the fighter from the database
-    retrieved_fighter = test_session.query(Fighter).filter_by(name=fighter.name).first()
-    assert retrieved_fighter is not None
-    assert retrieved_fighter.name == fighter.name
+from factories.b_factory import DeckFactory, MatchupFactory
 
 
-def test_unique_fighter_name(test_session: Session):
-    FighterFactory(name="Achilles")
-
-    with pytest.raises(IntegrityError):
-        fighter = FighterFactory(name="Achilles")
-        test_session.add(fighter)
-        test_session.commit()
-
-
-def test_create_matchup(test_session: Session):
-    deck1 = DeckFactory()
-    deck2 = DeckFactory()
-
-    matchup = MatchupFactory(deck1=deck1, deck2=deck2)
-
-    retrieved_matchup = (
-        test_session.query(Matchup)
-        .filter_by(deck1_id=deck1.id, deck2_id=deck2.id)
-        .first()
-    )
-    assert retrieved_matchup is not None
-    assert retrieved_matchup.plays == matchup.plays
-    assert retrieved_matchup.deck1_winrate == matchup.deck1_winrate
-    assert retrieved_matchup.deck2_winrate == matchup.deck2_winrate
-
-
-def test_unique_matchup(test_session: Session):
-    deck1 = DeckFactory()
-    deck2 = DeckFactory()
-
-    MatchupFactory(deck1=deck1, deck2=deck2)
-
-    with pytest.raises(IntegrityError):
-        matchup = MatchupFactory(deck1=deck1, deck2=deck2)
-        test_session.add(matchup)
-        test_session.commit()
-
-
-def test_create_deck(test_session: Session):
-    new_deck = DeckFactory()
-
-    # Query the deck
-    deck = test_session.query(Deck).filter_by(id=new_deck.id).first()
-
-    assert deck is not None
-    assert deck.name == new_deck.name
-    assert deck.unique_attack == new_deck.unique_attack
-    assert deck.unique_versatile == new_deck.unique_versatile
-    assert deck.unique_defense == new_deck.unique_defense
-    assert deck.unique_scheme == new_deck.unique_scheme
-    assert deck.total_attack == new_deck.total_attack
-    assert deck.total_versatile == new_deck.total_versatile
-    assert deck.total_defense == new_deck.total_defense
-    assert deck.total_scheme == new_deck.total_scheme
-    assert deck.total_value_attack == new_deck.total_value_attack
-    assert deck.total_value_versatile == new_deck.total_value_versatile
-    assert deck.total_value_defense == new_deck.total_value_defense
-    assert deck.set == new_deck.set
-    assert deck.special_ability_description == new_deck.special_ability_description
-    assert deck.notes == new_deck.notes
-
-
-def test_deck_unique():
-    DeckFactory(name="Alice")
-
-    with pytest.raises(IntegrityError):
-        DeckFactory(name="Alice")
-
-
-def test_read_matchups(client: TestClient):
+def test_read_matchups(client: TestClient, test_session: Session):
     deck1 = DeckFactory(name="Deck 1")
     deck2 = DeckFactory(name="Deck 2")
     deck3 = DeckFactory(name="Deck 3")
@@ -119,7 +37,7 @@ def test_read_matchups(client: TestClient):
     assert matchups[1]["deck2_winrate"] == matchup2.deck2_winrate
 
 
-def test_read_matchup(client: TestClient):
+def test_read_matchup(client: TestClient, test_session: Session):
     deck1 = DeckFactory(name="Deck 1")
     deck2 = DeckFactory(name="Deck 2")
 
@@ -143,7 +61,7 @@ def test_read_matchup(client: TestClient):
     assert response.json()["detail"] == "Matchup not found"
 
 
-def test_read_matchups_by_deck(client: TestClient):
+def test_read_matchups_by_deck(client: TestClient, test_session: Session):
     deck1 = DeckFactory(name="Deck 1")
     deck2 = DeckFactory(name="Deck 2")
     deck3 = DeckFactory(name="Deck 3")

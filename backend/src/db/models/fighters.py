@@ -30,4 +30,4 @@ class Fighter(Base):
     total_fighters = Column(Integer, nullable=False)
     deck_id = Column(Integer, ForeignKey("decks.id"), nullable=False)
 
-    deck = relationship("Deck", back_populates="fighter")
+    deck = relationship("Deck", back_populates="fighters")

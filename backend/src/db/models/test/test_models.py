@@ -1,9 +1,11 @@
 import pytest
+from sqlalchemy.exc import IntegrityError
+
+from db.models.card import Card, CardType
 from db.models.deck import Deck
 from db.models.fighters import Fighter
 from db.models.matchups import Matchup
-from factories.b_factory import DeckFactory, FighterFactory, MatchupFactory
-from sqlalchemy.exc import IntegrityError
+from factories.b_factory import CardFactory, DeckFactory, FighterFactory, MatchupFactory
 
 
 def test_create_fighter(test_session):
@@ -15,7 +17,7 @@ def test_create_fighter(test_session):
     assert retrieved_fighter.name == fighter.name
 
 
-def test_unique_fighter_name():
+def test_unique_fighter_name(test_session):
     FighterFactory(name="Achilles")
 
     with pytest.raises(IntegrityError):
@@ -39,7 +41,7 @@ def test_create_matchup(test_session):
     assert retrieved_matchup.deck2_winrate == matchup.deck2_winrate
 
 
-def test_unique_matchup():
+def test_unique_matchup(test_session):
     deck1 = DeckFactory()
     deck2 = DeckFactory()
 
@@ -57,24 +59,59 @@ def test_create_deck(test_session):
 
     assert deck is not None
     assert deck.name == new_deck.name
-    assert deck.unique_attack == new_deck.unique_attack
-    assert deck.unique_versatile == new_deck.unique_versatile
-    assert deck.unique_defense == new_deck.unique_defense
-    assert deck.unique_scheme == new_deck.unique_scheme
-    assert deck.total_attack == new_deck.total_attack
-    assert deck.total_versatile == new_deck.total_versatile
-    assert deck.total_defense == new_deck.total_defense
-    assert deck.total_scheme == new_deck.total_scheme
-    assert deck.total_value_attack == new_deck.total_value_attack
-    assert deck.total_value_versatile == new_deck.total_value_versatile
-    assert deck.total_value_defense == new_deck.total_value_defense
+    assert deck.plays == new_deck.plays
+    assert deck.winrate == new_deck.winrate
     assert deck.set == new_deck.set
-    assert deck.special_ability_description == new_deck.special_ability_description
-    assert deck.notes == new_deck.notes
+
+    # Check that the deck has the required cards
+    attack_card = (
+        test_session.query(Card)
+        .filter_by(deck_id=deck.id, type=CardType.ATTACK)
+        .first()
+    )
+    versatile_card = (
+        test_session.query(Card)
+        .filter_by(deck_id=deck.id, type=CardType.VERSATILE)
+        .first()
+    )
+    defense_card = (
+        test_session.query(Card)
+        .filter_by(deck_id=deck.id, type=CardType.DEFENSE)
+        .first()
+    )
+    scheme_card = (
+        test_session.query(Card)
+        .filter_by(deck_id=deck.id, type=CardType.SCHEME)
+        .first()
+    )
+
+    assert attack_card is not None
+    assert versatile_card is not None
+    assert defense_card is not None
+    assert scheme_card is not None
 
 
-def test_deck_unique():
+def test_deck_unique(test_session):
     DeckFactory(name="Alice")
 
     with pytest.raises(IntegrityError):
         DeckFactory(name="Alice")
+
+
+def test_create_card_unique(test_session):
+    # Create a new deck, which will automatically create one card of each type
+    deck = DeckFactory()
+
+    #   Check that the initially created card is correctly associated with the deck
+    retrieved_card = (
+        test_session.query(Card)
+        .filter_by(deck_id=deck.id, type=CardType.ATTACK)
+        .first()
+    )
+    assert retrieved_card is not None
+    assert retrieved_card.type == CardType.ATTACK
+    assert retrieved_card.deck_id == deck.id
+
+    # Attempt to create another card of the same type should raise an IntegrityError
+    with pytest.raises(IntegrityError):
+        CardFactory(deck=deck, type=CardType.ATTACK)

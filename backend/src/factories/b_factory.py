@@ -1,8 +1,11 @@
 import factory
+from factory.alchemy import SQLAlchemyModelFactory
+
+from db.models.card import Card, CardType
 from db.models.deck import Deck
 from db.models.fighters import Fighter, FighterType, RangeType
 from db.models.matchups import Matchup
-from factory.alchemy import SQLAlchemyModelFactory
+from db.models.special_ability import SpecialAbility
 
 
 class BaseFactory(SQLAlchemyModelFactory):
@@ -17,25 +20,42 @@ class DeckFactory(BaseFactory):
         model = Deck
 
     name = factory.Faker("word")
-    unique_attack = factory.Faker("random_int", min=1, max=10)
-    unique_versatile = factory.Faker("random_int", min=1, max=10)
-    unique_defense = factory.Faker("random_int", min=1, max=10)
-    unique_scheme = factory.Faker("random_int", min=1, max=10)
-    total_attack = factory.Faker("random_int", min=10, max=100)
-    total_versatile = factory.Faker("random_int", min=10, max=100)
-    total_defense = factory.Faker("random_int", min=10, max=100)
-    total_scheme = factory.Faker("random_int", min=10, max=100)
-    total_value_attack = factory.Faker("random_int", min=10, max=100)
-    total_value_versatile = factory.Faker("random_int", min=10, max=100)
-    total_value_defense = factory.Faker("random_int", min=10, max=100)
-    set = factory.Faker("word")
-    special_ability_name = factory.Maybe(
-        "special_ability_description", factory.Faker("word"), None
-    )
-    special_ability_description = factory.Faker("paragraph")
-    notes = factory.Faker("paragraph")
     plays = factory.Faker("random_int", min=1, max=1000)
     winrate = factory.Faker("pyfloat", positive=True, max_value=100)
+    set = factory.Faker("word")
+
+    @factory.post_generation
+    def add_cards(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        # Ensure one card of each type is created
+        CardFactory(deck=self, type=CardType.ATTACK)
+        CardFactory(deck=self, type=CardType.VERSATILE)
+        CardFactory(deck=self, type=CardType.DEFENSE)
+        CardFactory(deck=self, type=CardType.SCHEME)
+
+
+class CardFactory(BaseFactory):
+    class Meta:
+        model = Card
+
+    deck = factory.SubFactory(DeckFactory)
+    type = factory.Iterator(
+        [CardType.ATTACK, CardType.DEFENSE, CardType.VERSATILE, CardType.SCHEME]
+    )
+    quantity = factory.Faker("random_int", min=1, max=10)
+    total_value = factory.Faker("random_int", min=10, max=100)
+
+
+class SpecialAbilityFactory(BaseFactory):
+    class Meta:
+        model = SpecialAbility
+
+    deck = factory.SubFactory(DeckFactory)
+    name = factory.Faker("word")
+    description = factory.Faker("paragraph")
+    notes = factory.Faker("paragraph")
 
 
 class FighterFactory(BaseFactory):

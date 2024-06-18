@@ -1,10 +1,11 @@
 from typing import List
 
-from db.models.fighters import Fighter
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from db.models.fighters import Fighter
 from routes.dependencies import get_db
 from schemas.schemas import FighterSchema
-from sqlalchemy.orm import Session
 
 router = APIRouter()
 
