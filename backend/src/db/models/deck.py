@@ -12,6 +12,7 @@ class Deck(Base):
     plays = Column(Integer, nullable=False)
     winrate = Column(Float, nullable=False)
     set = Column(String, nullable=False)  # set the deck belongs to
+    movement = Column(Integer, nullable=False)
 
     cards = relationship("Card", back_populates="deck")
     special_abilities = relationship("SpecialAbility", back_populates="decks")
