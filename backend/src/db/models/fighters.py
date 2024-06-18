@@ -26,7 +26,6 @@ class Fighter(Base):
     starting_hp = Column(Integer, nullable=False)
     range_type = Column(SqlEnum(RangeType), nullable=False)
     fighter_type = Column(SqlEnum(FighterType), nullable=False)
-    movement = Column(Integer, nullable=False)
     total_fighters = Column(Integer, nullable=False)
     deck_id = Column(Integer, ForeignKey("decks.id"), nullable=False)
 
