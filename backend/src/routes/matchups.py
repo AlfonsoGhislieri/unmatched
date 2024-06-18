@@ -1,11 +1,12 @@
 from typing import List
 
-from db.models.matchups import Matchup
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from db.models.matchups import Matchup
 from routes.dependencies import get_db
 from routes.helpers.helpers import normalize_matchup_data
 from schemas.schemas import MatchupDetailSchema, MatchupSchema
-from sqlalchemy.orm import Session
 
 router = APIRouter()
 
@@ -24,22 +25,20 @@ def read_matchup(matchup_id: int, db: Session = Depends(get_db)):
     return matchup
 
 
-@router.get("/fighter/{fighter_id}", response_model=List[MatchupDetailSchema])
-def read_matchups_by_fighter(fighter_id: int, db: Session = Depends(get_db)):
+@router.get("/deck/{deck_id}", response_model=List[MatchupDetailSchema])
+def read_matchups_by_deck(deck_id: int, db: Session = Depends(get_db)):
     matchups = (
         db.query(Matchup)
-        .filter(
-            (Matchup.fighter1_id == fighter_id) | (Matchup.fighter2_id == fighter_id)
-        )
+        .filter((Matchup.deck1_id == deck_id) | (Matchup.deck2_id == deck_id))
         .all()
     )
 
     if not matchups:
         raise HTTPException(
-            status_code=404, detail="Matchups not found for the given fighter"
+            status_code=404, detail="Matchups not found for the given deck"
         )
 
-    # normalise data for consumption on frontend
-    detailed_matchups = normalize_matchup_data(matchups, fighter_id)
+    # Normalize data for consumption on frontend
+    detailed_matchups = normalize_matchup_data(matchups, deck_id)
 
     return detailed_matchups

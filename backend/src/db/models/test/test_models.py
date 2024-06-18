@@ -1,86 +1,117 @@
 import pytest
+from sqlalchemy.exc import IntegrityError
+
+from db.models.card import Card, CardType
+from db.models.deck import Deck
 from db.models.fighters import Fighter
 from db.models.matchups import Matchup
-from sqlalchemy.exc import IntegrityError
+from factories.b_factory import CardFactory, DeckFactory, FighterFactory, MatchupFactory
 
 
 def test_create_fighter(test_session):
-    fighter = Fighter(name="Achilles", plays=100, winrate=50.0)
-    fighter = Fighter(name="Achilles", plays=100, winrate=50.0)
-
-    test_session.add(fighter)
-    test_session.commit()
+    fighter = FighterFactory()
 
     # Retrieve the fighter from the database
-    retrieved_fighter = test_session.query(Fighter).filter_by(name="Achilles").first()
+    retrieved_fighter = test_session.query(Fighter).filter_by(name=fighter.name).first()
     assert retrieved_fighter is not None
-    assert retrieved_fighter.name == "Achilles"
-    assert retrieved_fighter.plays == 100
-    assert retrieved_fighter.winrate == 50.0
+    assert retrieved_fighter.name == fighter.name
 
 
 def test_unique_fighter_name(test_session):
-    fighter1 = Fighter(name="Achilles", plays=100, winrate=50.0)
-    fighter2 = Fighter(name="Achilles", plays=150, winrate=60.0)
-    test_session.add(fighter1)
-    test_session.commit()
+    FighterFactory(name="Achilles")
 
     with pytest.raises(IntegrityError):
-        test_session.add(fighter2)
-        test_session.commit()
+        FighterFactory(name="Achilles")
 
 
 def test_create_matchup(test_session):
-    fighter1 = Fighter(name="Achilles", plays=100, winrate=50.0)
-    fighter2 = Fighter(name="Alice", plays=150, winrate=60.0)
-    test_session.add(fighter1)
-    test_session.add(fighter2)
-    test_session.commit()
+    deck1 = DeckFactory()
+    deck2 = DeckFactory()
 
-    matchup = Matchup(
-        fighter1_id=fighter1.id,
-        fighter2_id=fighter2.id,
-        plays=66,
-        fighter1_winrate=70,
-        fighter2_winrate=30,
-    )
-    test_session.add(matchup)
-    test_session.commit()
+    matchup = MatchupFactory(deck1=deck1, deck2=deck2)
 
     retrieved_matchup = (
         test_session.query(Matchup)
-        .filter_by(fighter1_id=fighter1.id, fighter2_id=fighter2.id)
+        .filter_by(deck1_id=deck1.id, deck2_id=deck2.id)
         .first()
     )
     assert retrieved_matchup is not None
-    assert retrieved_matchup.plays == 66
-    assert retrieved_matchup.fighter1_winrate == 70
+    assert retrieved_matchup.plays == matchup.plays
+    assert retrieved_matchup.deck1_winrate == matchup.deck1_winrate
+    assert retrieved_matchup.deck2_winrate == matchup.deck2_winrate
 
 
 def test_unique_matchup(test_session):
-    fighter1 = Fighter(name="Achilles", plays=100, winrate=50.0)
-    fighter2 = Fighter(name="Alice", plays=150, winrate=60.0)
-    test_session.add(fighter1)
-    test_session.add(fighter2)
-    test_session.commit()
+    deck1 = DeckFactory()
+    deck2 = DeckFactory()
 
-    matchup1 = Matchup(
-        fighter1_id=fighter1.id,
-        fighter2_id=fighter2.id,
-        plays=66,
-        fighter1_winrate=70,
-        fighter2_winrate=30,
-    )
-    matchup2 = Matchup(
-        fighter1_id=fighter1.id,
-        fighter2_id=fighter2.id,
-        plays=77,
-        fighter1_winrate=80,
-        fighter2_winrate=20,
-    )
-    test_session.add(matchup1)
-    test_session.commit()
+    MatchupFactory(deck1=deck1, deck2=deck2)
 
     with pytest.raises(IntegrityError):
-        test_session.add(matchup2)
-        test_session.commit()
+        MatchupFactory(deck1=deck1, deck2=deck2)
+
+
+def test_create_deck(test_session):
+    new_deck = DeckFactory()
+
+    # Query the deck
+    deck = test_session.query(Deck).filter_by(id=new_deck.id).first()
+
+    assert deck is not None
+    assert deck.name == new_deck.name
+    assert deck.plays == new_deck.plays
+    assert deck.winrate == new_deck.winrate
+    assert deck.set == new_deck.set
+
+    # Check that the deck has the required cards
+    attack_card = (
+        test_session.query(Card)
+        .filter_by(deck_id=deck.id, type=CardType.ATTACK)
+        .first()
+    )
+    versatile_card = (
+        test_session.query(Card)
+        .filter_by(deck_id=deck.id, type=CardType.VERSATILE)
+        .first()
+    )
+    defense_card = (
+        test_session.query(Card)
+        .filter_by(deck_id=deck.id, type=CardType.DEFENSE)
+        .first()
+    )
+    scheme_card = (
+        test_session.query(Card)
+        .filter_by(deck_id=deck.id, type=CardType.SCHEME)
+        .first()
+    )
+
+    assert attack_card is not None
+    assert versatile_card is not None
+    assert defense_card is not None
+    assert scheme_card is not None
+
+
+def test_deck_unique(test_session):
+    DeckFactory(name="Alice")
+
+    with pytest.raises(IntegrityError):
+        DeckFactory(name="Alice")
+
+
+def test_create_card_unique(test_session):
+    # Create a new deck, which will automatically create one card of each type
+    deck = DeckFactory()
+
+    #   Check that the initially created card is correctly associated with the deck
+    retrieved_card = (
+        test_session.query(Card)
+        .filter_by(deck_id=deck.id, type=CardType.ATTACK)
+        .first()
+    )
+    assert retrieved_card is not None
+    assert retrieved_card.type == CardType.ATTACK
+    assert retrieved_card.deck_id == deck.id
+
+    # Attempt to create another card of the same type should raise an IntegrityError
+    with pytest.raises(IntegrityError):
+        CardFactory(deck=deck, type=CardType.ATTACK)

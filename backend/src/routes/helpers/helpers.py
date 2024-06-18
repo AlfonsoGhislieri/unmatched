@@ -5,22 +5,22 @@ from schemas.schemas import MatchupDetailSchema
 
 
 def normalize_matchup_data(
-    matchups: List[Matchup], fighter_id: int
+    matchups: List[Matchup], selected_deck_id: int
 ) -> List[MatchupDetailSchema]:
     return [
         MatchupDetailSchema(
             matchup_id=matchup.id,
-            fighter_id=fighter_id,
+            deck_id=selected_deck_id,
             opponent_id=(
-                matchup.fighter2_id
-                if matchup.fighter1_id == fighter_id
-                else matchup.fighter1_id
+                matchup.deck2_id
+                if matchup.deck1_id == selected_deck_id
+                else matchup.deck1_id
             ),
             plays=matchup.plays,
             winrate=(
-                matchup.fighter1_winrate
-                if matchup.fighter1_id == fighter_id
-                else matchup.fighter2_winrate
+                matchup.deck1_winrate
+                if matchup.deck1_id == selected_deck_id
+                else matchup.deck2_winrate
             ),
         )
         for matchup in matchups

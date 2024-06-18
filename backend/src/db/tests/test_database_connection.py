@@ -1,7 +1,8 @@
 import pytest
-from db.database import get_session_engine
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
+
+from db.database import get_session_engine
 
 
 @pytest.fixture(scope="module")

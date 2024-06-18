@@ -1,0 +1,98 @@
+﻿Deck Name,Unique Attack,Unqiue Versatile,Unique Defense,Unique Scheme,Total Attack ,Total Versatile ,Total Defense,Total Scheme,Total Value Attack,Total Value Versatile,Total Value Defense,Set,Special Ability Name,Special Ability Description,Notes
+Achilles,4,5,2,1,10,12,6,2,27,34,18,"Battle of Legends, Volume Two",,"When Patroclus is defeated, discard 2 random cards.
+While Patroclus is defeated:
+Add +2 to the value of all Achilles' attacks.
+If Achilles wins combat, draw 1 card.","While Patroclus is defeated, if Achilles wins combat he draws 1 card after any AFTER COMBAT effects have resolved.
+"
+Alice,5,7,1,2,7,17,2,4,24,41,4,"Battle of Legends, Volume One",CURIOSER AND CURIOSER,"When you place Alice, choose whether she starts the game BIG or SMALL.
+When Alice is BIG, add 2 to the value of her attack cards.
+When Alice is SMALL, add 1 to the value of her defense cards.",
+Angel,5,5,1,1,12,13,2,3,51,30,6,Buffy the Vampire Slayer,,"After Angel or Faith attacks, if you lost the combat, draw 1 card.",
+Annie Christmas,2,6,2,2,5,15,5,5,21,43,12,Tales to Amaze,NECKLACE OF PEARLS,Add +2 to the value of Annie's attacks if she has less health than the defender.,
+Beowulf,5,3,1,3,11,9,3,7,34,21,9,Little Red Riding Hood vs. Beowulf,,"Beowulf starts with 1 Rage.
+When Beowulf is dealt damage, he gains 1 Rage.
+Beowulf has a maximum of 3 rage.",
+Bigfoot,3,5,1,2,8,15,2,5,38,42,6,Robin Hood vs. Bigfoot,LONER BY NATURE,"At the end of your turn, if there are no opposing fighters in Bigfoot's zone, you may draw 1 card.
+",
+Black Panther,2,7,2,2,5,16,4,5,13,39,10,For King and Country,VIBRANIUM SUIT,"Whenever you BOOST, draw 1 card.
+Cards stored in your VIBRANIUM SUIT can only be used to BOOST.",
+Black Widow,3,5,2,5,7,14,5,5,24,44,9,For King and Country,MISSION READY,"Before drawing your starting hand, add THE MOSCOW PROTOCOL card to your hand.
+Then, shuffle your deck and draw 5 cards. (Your starting hand is 6 cards instead of 5.)",
+Bloody Mary,4,5,2,2,9,12,5,4,19,33,9,"Battle of Legends, Volume Two",,"At the start of your turn, if you have exactly 3 cards in hand, gain 1 action.",
+Bruce Lee,6,5,2,4,6,14,5,5,18,34,15,Bruce Lee,,"At the end of your turn, you may move Bruce Lee 1 space.",
+Buffy,4,6,1,2,11,17,2,5,43,46,4,Buffy the Vampire Slayer,,Buffy may move through spaces containing opposing fighters (including when she is moved by effects).,"At the start of the game, after heroes have been placed in their starting spaces, choose Xander or Giles as your sidekick and shuffle their 5 cards into your base deck of 25 cards, before drawing your starting hand."
+Bullseye,4,6,1,1,11,14,3,2,30,35,9,Hell's Kitchen,,Bullseye can attack from up to 5 spaces away (ignoring zones).,Bullseye's special 5 space attack range is in addition to also being able to attack any opposing fighter in his zone.
+Cloak and Dagger,5,5,1,1,13,12,3,2,49,33,6,Teen Spirit,UMBRA // REFRACTION,"After you attack, if Cloak dealt at least 2 combat damage, your opponent discards 1 card.
+// After you attack, if Dagger dealt at least 2 combat damage, gain 1 action.",
+Daredevil,2,3,1,2,4,9,3,6,12,24,9,Hell's Kitchen,,"DURING COMBAT: If you have 2 or fewer cards in your hand, you may BLIND BOOST your attack or defense.
+(If you have other DURING COMBAT effects, choose the order.)","When you BLIND BOOST, you discard the top card of your deck and add its BOOST value onto the card you played in combat. Daredevil's ability cannot be canceled. Follow the normal resolution rules: Defender resolves first."
+Deadpool,11,11,4,4,11,11,4,4,34,26,12,Deadpool,,"After you attack, Deadpool recovers 1 health.
+Also, if your opponent's real name is Logan, all your attacks are +5.","All of Deadpool's cards are unique. Many are ""modified"" versions of other characters' cards."
+Doctor Strange,3,5,1,2,10,13,3,4,32,29,6,Brains and Brawn,DARK PACT,"After each combat, if Doctor Strange played a card, you may deal 1 damage to him. If you do, put that card on the bottom of your deck and draw 1 card.",
+Dr. Ellie Sattler,1,10,2,1,3,21,5,1,6,37,10,Jurassic Park - Sattler vs. T-Rex,,"After Dr. Sattler or Dr. Malcolm move, place an insight token in their new space. You have 5 insight tokens.
+","Whenever either of your fighters moves to a new space, place and insight token in their new space. Tokens may be placed in spaces with other tokens, including other insight tokens.
+There tokens have no effect themselves but any of your cards interact with them. When you remove insight tokens from the board, return them to your supply. You can place them on the board again in the future.
+If you would place an insight token but don't have any in your supply, nothing happens."
+Dr. Jill Trent,2,8,2,1,5,19,4,2,16,57,16,Tales to Amaze,GADGETOLOGY // HYPNORAY BLASTER // ULTRABIOTIC TONIC,"At the start of your turn, activate one of your gadgets.
+Whenever Jill Trent attacks, resolve the active gadget's effect. // DURING COMBAT: If your card's printed value is lower than your opponent's, reveal the top card of your opponent's deck. Increase the value of your attack by the BOOST value of the revealed card.
+// AFTER COMBAT: If your card's printed value is higher than your opponent's, Jill Trent Recovers 1 health.",
+Dracula,4,3,2,4,9,8,4,9,29,23,8,Cobble & Fog,BLOODTHIRSTY,"At the start of your turn, you may deal 1 damage to a fighter adjacent to Dracula. If you do, draw a card.",
+Elektra,3,4,2,1,6,8,4,2,26,22,8,Hell's Kitchen,,"The first time Elektra would be defeated, remove her and all Hand from the board. She is not defeated. At the start of your next turn, Resurrect her. (Ignore effects with the RESURRECTED symbol.)
+When Elektra Resurrects: Flip your health dial. Shuffle your discard pile into your deck.
+Place Elektra and all Hand back onto the board with each fighter in a different zone. (You must resolve effects with the RESURRECTED symbol.)","When resurrecting, only your discard pile is shuffled into your deck, not your hand of cards. When placing your fighters after you resurrect, you may place them in zones containing opposing fighters, you just cannot place two of your own fighters in the same zone as each other."
+Ghost Rider,3,5,2,2,8,13,5,4,28,28,10,Redemption Row,,"Ghost Rider starts the game with 5 Hellfire. When you maneuver you may spend 1 Hellfire. If you do, increase Ghost Rider's move value to 4, and he mave move through opposing fighters. Then deal 1 damage to each opposing fighter he moved through.","If you spend a Hellfire to use Ghost Rider's ability, your movement value is set to 4, and cannot be increased by BOOSTING your maneuver."
+Golden Bat,3,5,2,2,8,13,4,5,19,35,16,Tales to Amaze,THE FIRST SUPERHERO,"If you haven't taken a Maneuver action this turn, add +2 to the value of Golden Bat's attacks.",
+Harry Houdini,5,4,2,2,12,10,5,3,30,24,10,Houdini vs. The Genie,ESCAPE ARTIST,"When you take the maneuver action and BOOST, you may place Houdini in any space instead of moving. (Bess moves as normal.)
+",
+InGen,4,4,1,2,11,12,2,5,34,30,8,Jurassic Park - Ingen vs. Raptors,,"At the start of your turn, you may place a trap.
+Whenever one of your traps is returned to the box, draw a card.
+Muldoon starts with 8 traps.","You may place a trap token in any unoccupied space in Muldoon's zone. If Muldoon's space is in more than one zone, you may pick a space in any of them. The target space cannot contain any fighters or other tokens, including other traps.
+When an opposing fighter enters a space with a trap, the trap goes off. The fighter must immediately stop moving and takes 1 damage. After the trap goes off, return it to the box.
+Muldoon's and his allies may land on or move through traps freely without setting them off."
+Invisible Man,3,4,3,4,7,9,6,8,25,22,18,Cobble & Fog,,"At the start of the game, after you place Invisible Man, place 3 fog tokens in separate spaces in his zone.
+When Invisible Man is on a space with a fog token, add 1 to the value of his defense cards.
+Invisible Man may move between two spaces with fog tokens as if they were adjacent.","When placing fog tokens at the start of the game, place them exactly like you would sidekick tokens (they cannot be placed in a space with a fighter, including Invisible Man.) During the game, fog tokens can only be moved by Invisible Man's card effects. They may move through or end their movement in spaces with fighters or other tokens."
+Jekyll & Hyde,2,6,2,3,4,15,4,7,20,44,12,Cobble & Fog,THE SERUM,"Start the game as Dr. Jekyll. At the start of your turn, you may transform into Dr. Jekyll or Mr. Hyde.
+While Mr. Hyde: After you Maneuver, take 1 damage.
+Use the transformation token to indicate what he currently is.",
+King Arthur,5,5,2,4,8,14,3,5,26,36,1,"Battle of Legends, Volume One",,"When King Arthur attacks, you may BOOST that attack. Play the BOOST card, face down, along with your attack card.
+If your opponent cancels the effects on your attack card, the BOOST is discarded without effect.","Excalibur can still be cancelled even though it does not have a card effect. This will cause any BOOST played with Excalibur to be discarded without effect.
+"
+Little Red Riding Hood,3,4,2,3,7,11,5,7,24,32,10,Little Red Riding Hood vs. Beowulf,,"Resolve an effect on a card you play if the symbol next to the effect matches the item in your basket. At the start of the game, place LITTLE RED's BASKET in your discard pile.
+Little Red's Basket: This starts in your discard pile. It does not count as a card","(🌟 counts as any one 🐺🌹⚔️ symbol.)
+"
+Luke Cage,5,3,4,1,12,7,9,2,52,11,12,Redemption Row,,"Luke Cage takes 2 less combat damage from attacks.
+(When defending, Luke Cage wins combat if he takes no damage, even if he didn't play a card.)",
+Medusa,2,6,1,2,6,17,3,4,15,44,12,"Battle of Legends, Volume One",,"At the start of your turn, you may deal 1 damage to an opposing fighter in Medusa's zone.",
+Moon Knight,2,7,1,2,6,17,3,4,21,40,9,Redemption Row,MOON KNIGHT // KHONSHU // MR. KNIGHT,"At the start of your turn, move up to 2 spaces. // Khonshu adds +2 to the value of his attack cards. He does not take damage from effects other than combat damage.
+// Mr. Knight adds +1 to all his defense values.
+At the end of your turn, change to your next identity (In order, Moon Knight -> Khonshu -> Mr. Knight, repeating).","Start the game as Moon Knight. You must change to your next form at the end of your turn. Moon Knight, Khonshu, and Mr. Knight all share the same health dial."
+Ms. Marvel,3,5,1,2,9,15,3,3,24,39,9,Teen Spirit,STRETCHY,"At the start of your turn, you may move Ms. Marvel 1 space.
+Ms. Marvel can attack from up to 2 spaces away (ignoring zones).",
+Nikola Tesla,3,5,1,2,8,15,3,4,31,42,9,Tales to Amaze,ELECTRICAL OVERFLOW,"Start the game with 1 coil charged.
+At the end of your turn, charge 1 coil.
+At the start of your turn, if both coils are charged, deal 1 damage to each opposing fighter adjacent to Tesla and move them up to 1 space.",
+Oda Nobunaga,4,3,2,2,10,9,6,5,35,17,15,Sun's Origin,MASTER STRATEGIST,Other friendly fighters in Oda Nobunaga's zone add +1 to the value of their played combat cards. (Oda Nobunaga does not benefit from this ability.),"Flanking is defined as when at least two of your fighters (fighters you control) are adjacent to a fighter.
+"
+Raptors,6,2,1,2,16,6,4,4,49,18,12,Jurassic Park - Ingen vs. Raptors,,"Raptors add 1 to the value of their attack cards for each of your other Raptors adjacent to the
+defender.",
+Robin Hood,5,4,1,1,13,12,2,3,39,27,6,Robin Hood vs. Bigfoot,HIT AND RUN,"After you attack, you may move your attacking fighter up to 2 spaces.",
+She-Hulk,3,4,2,3,7,12,5,6,28,30,4,Brains and Brawn,JUST THROW SOMETHING,"At the start of your turn, you may discard a card to deal damage equal to its BOOST value to a fighter in your zone.",
+Sherlock Holmes,2,6,1,4,4,15,2,9,20,42,6,Cobble & Fog,,"Effects on HOLMES and DR. WATSON cards cannot be cancelled by an opponent.
+(Effects on ANY cards can be cancelled.)",
+Sinbad,9,6,0,1,11,17,0,2,28,46,0,"Battle of Legends, Volume One",7 VOYAGES,"When you maneuver, you may move your fighters +1 space for each VOYAGE card in your discard pile.",
+Spider-Man,3,5,2,2,8,12,6,4,38,35,18,Brains and Brawn,SPIDEY-SENSE,"When an opponent attacks Spider-Man, before you play a defense card, they must tell you the printed value of their card.",
+Spike,2,8,0,2,3,21,0,6,10,55,0,Buffy the Vampire Slayer,,"At the start of your turn, you may place a Shadow token in any space adjacent to Spike or Drusilla.",
+Squirrel Girl,3,6,1,3,8,14,3,5,15,41,9,Teen Spirit,GO NUTS!,"At the start of your turn, summon a squirrel in a space adjacent to Squirrel Girl.
+Squirrels are small fighters. Do not start with any squirrels on the board.","Up to 4 small fighters may share a space with another fighter. When a squirrel is dealt damage, each other squirrel in their space is dealt that much damage as well."
+Sun Wukong,4,3,3,2,11,10,6,3,29,23,18,"Battle of Legends, Volume Two",,"At the start of your turn, you may take 1 damage to summon a Clone in an empty space adjacent to Sun Wukong.
+Do not start with any Clones on the board.",
+T. Rex,4,3,1,3,12,8,2,8,38,21,2,Jurassic Park - Sattler vs. T-Rex,,"T-Rex is a large fighter. (She can attack up to 2 spaces away.) At the end of your turn, draw a card.","Large fighters have an extended base that can occupy up to two spaces. Large fighters may start moving from any space they are in. When they do, rotate them so that the head is moving into the new space. Their tail always follows behind their head, entering the space the left. Large fighters also ignore one-way arrows on maps and cannot use secret passages.
+Large fighters can attack up to 2 spaces away, even over fighters that occupy one of those spaces."
+The Genie,4,5,2,1,9,13,5,3,30,27,2,Houdini vs. The Genie,INFINITE POWER,"At the start of your turn, you may discard 1 card to gain 1 action.",
+Tomoe Gozen,5,4,2,1,11,11,5,3,38,33,12,Sun's Origin,ATTACK OF OPPORTUNITY,"When an opposing hero leaves Tomoe Gozen's zone, deal 1 damage to that hero.
+If only I could find a worthy foe.","Tomoe's ability applies any time an opposing hero leaves her zone by moving, placing outside of her zone, or leaving the board."
+Willow,4,6,1,2,9,15,2,4,32,36,10,Buffy the Vampire Slayer,,"When Willow or Tara is dealt damage, Willow becomes Dark Willow.
+At the end of your turn, if Dark Willow is adjacent to Tara, she becomes Willow.",
+Winter Soldier,4,5,1,2,11,12,3,4,35,34,9,For King and Country,BRAINWASHED,Effects on Winter Soldier's cards cannot be canceled.,
+Yennenga,2,7,1,2,6,18,2,4,18,47,6,"Battle of Legends, Volume Two",,"If Yennenga would take damage, you may assign any amount of that damage to one or more Archers in her zone instead. (You may not assign more damage to an Archer than their remaining health.)","If damage would be dealt to Yennenga and an Archer at the same time, Yennenga cannot assign damage from herself to that Archer if the Archer would already be defeated by the damage it took. (Yennenga cannot use her ability to make damage disappear.)"
