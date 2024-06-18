@@ -88,7 +88,7 @@ def insert_matchup_data(db_session, df_plays, df_winrate):
 
 
 if __name__ == "__main__":
-    SessionLocal, engine = get_session_engine()
+    session_local, engine = get_session_engine()
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
@@ -109,7 +109,7 @@ if __name__ == "__main__":
         )
     )
 
-    with SessionLocal() as session:
+    with session_local() as session:
         print("Inserting fighter data...")
         insert_fighter_data(session, df_fighters)
         print("Inserting matchup data...")

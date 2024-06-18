@@ -34,8 +34,8 @@ def test_engine():
 
 @pytest.fixture(scope="function")
 def test_session(test_engine):
-    SessionLocal = sessionmaker(bind=test_engine)
-    session = SessionLocal()
+    session_local = sessionmaker(bind=test_engine)
+    session = session_local()
     set_session_factory_for_all_subclasses(session)
 
     yield session
