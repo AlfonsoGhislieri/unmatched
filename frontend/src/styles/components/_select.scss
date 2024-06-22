@@ -1,0 +1,79 @@
+$select-size: 125px;
+$select-grid-padding: 16px;
+$select-grid-gap: $select-grid-padding;
+$select-grid-min-items-row: 2;
+$select-grid-max-items-row: 4;
+
+.select-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: $select-grid-gap;
+    gap: $select-grid-gap;
+    min-width: calc(
+        $select-grid-min-items-row *
+        ($select-grid-gap + $select-size)
+        - $select-grid-gap
+    );
+    max-width: calc(
+        ($select-grid-max-items-row * $select-size) + 
+        (($select-grid-max-items-row - 1) * $select-grid-padding)
+    );
+}
+
+.select {
+    width: $select-size;
+    background-color: gray;
+    aspect-ratio: 1/1;
+    position: relative;
+    box-shadow: 0 0 2px black;
+    border-radius: 5%;
+    overflow: hidden;
+    transition:
+        scale 0.1s ease-in-out,
+        transform 0.25s ease-in-out,;
+    scale: calc(1/1.07);
+
+    .card-img {
+        position: absolute;
+        left: -3.5%;
+        top: -24%;
+        width: 107%;
+        opacity: 85%;
+        transition: scale 0.1s ease-in-out, opacity 0.25s ease-in-out;
+    }
+
+    .mini-img {
+        position: absolute;
+        height: 100%;
+        scale: 0;
+        opacity: 0;
+        transition: scale 0.25s ease-in-out 0.5s, opacity 0.25s ease-in-out 0.5s;
+    }
+
+    &.hovered {
+        cursor: pointer;
+        scale: 1;
+
+        .card-img {
+            scale: calc(1/1.07);
+            opacity: 1;
+        }
+
+        .mini-img {
+            scale: 1;
+            opacity: 1;
+            transition-delay: 0s;
+        }
+    }
+
+    &.flip {
+        perspective: 1000px;
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
+        transition:
+            scale 0.1s ease-in-out,
+            transform 0.3s ease-in-out;
+        transform: rotateY(180deg);
+    }
+}

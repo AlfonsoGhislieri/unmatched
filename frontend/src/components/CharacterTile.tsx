@@ -1,4 +1,4 @@
-import * as tile from './assets/tiles';
+import * as tile from '../assets/tiles';
 
 function CharacterGrid() {
   return (

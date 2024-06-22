@@ -1,4 +1,3 @@
-import { CharacterTile } from 'CharacterTile';
 import { useParams } from 'react-router-dom';
 
 const Hero = () => {
@@ -10,7 +9,6 @@ const Hero = () => {
     <div>
       <h2>Hero Details</h2>
       <p>Hero ID: {heroId}</p>
-      <CharacterTile name={heroId} />
     </div>
   );
 };

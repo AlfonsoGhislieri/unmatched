@@ -1,20 +1,21 @@
-import { Link, Outlet } from 'react-router-dom';
+import { SelectGrid, allHeroes } from 'components/SelectGrid';
 
-import { CharacterGrid } from 'CharacterTile';
+import { Outlet } from 'react-router-dom';
+import { SelectGridFilter } from 'components/SelectGridFilter';
+import { useState } from 'react';
 
 const Heroes = () => {
-  const heroList = ['houdini', 'superman', 'batman'];
+  const [heroesList, setHeroesList] = useState(allHeroes);
+
+  const handleFilterChange = (query: string) => {
+    setHeroesList(allHeroes.filter((hero) => hero.toLowerCase().includes(query.toLowerCase())));
+  };
+
   return (
     <div>
       <h1>Heroes Page</h1>
-      <ul>
-        {heroList.map((hero) => (
-          <li key={hero}>
-            <Link to={`/heroes/${hero}`}>{hero}</Link>
-          </li>
-        ))}
-      </ul>
-      <CharacterGrid />
+      <SelectGridFilter onFilterChange={handleFilterChange} />
+      <SelectGrid heroes={heroesList} />
       <Outlet />
     </div>
   );
