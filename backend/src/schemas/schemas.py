@@ -1,9 +1,17 @@
 from pydantic import BaseModel  # pylint: disable=E0611
 
+from db.models.fighters import FighterType, RangeType
+
 
 class FighterSchema(BaseModel):
     id: int
     name: str
+    starting_hp: int
+    movement: int
+    range_type: RangeType
+    fighter_type: FighterType
+    total_fighters: int
+    deck_id: int
 
     class Config:
         orm_mode = True
