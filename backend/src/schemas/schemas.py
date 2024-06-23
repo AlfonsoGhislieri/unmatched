@@ -1,9 +1,11 @@
-from pydantic import BaseModel  # pylint: disable=E0611
+from pydantic import BaseModel, ConfigDict  # pylint: disable=E0611
 
 from db.models.fighters import FighterType, RangeType
 
 
 class FighterSchema(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     name: str
     starting_hp: int
@@ -13,11 +15,10 @@ class FighterSchema(BaseModel):
     total_fighters: int
     deck_id: int
 
-    class Config:
-        orm_mode = True
-
 
 class MatchupSchema(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     deck1_id: int
     deck2_id: int
@@ -25,16 +26,12 @@ class MatchupSchema(BaseModel):
     deck1_winrate: int
     deck2_winrate: int
 
-    class Config:
-        orm_mode = True
-
 
 class MatchupDetailSchema(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     matchup_id: int
     deck_id: int
     opponent_id: int
     plays: int
     winrate: float
-
-    class Config:
-        orm_mode = True
