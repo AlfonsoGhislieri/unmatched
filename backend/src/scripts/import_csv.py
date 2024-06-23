@@ -48,48 +48,38 @@ def insert_fighter_data(db_session, df):
 
 
 def insert_matchup_data(db_session, df_plays, df_winrate):
-    # Create a dictionary to map fighter names to their IDs
-    fighter_ids = {
-        fighter.name: fighter.id for fighter in db_session.query(Fighter).all()
-    }
+    # Create a dictionary to map deck names to their IDs
+    deck_ids = {name: id for id, name in db_session.query(Deck.id, Deck.name).all()}
 
     # Get fighter names from the 'category' column
-    fighter_names = df_plays["category"].tolist()
+    deck_names = df_plays["Deck Name"].tolist()
 
     # Iterate over all combinations of fighter pairs
-    for fighter1_name, fighter2_name in itertools.product(fighter_names, repeat=2):
-        if fighter1_name == fighter2_name:
+    for deck1_name, deck2_name in itertools.product(deck_names, repeat=2):
+        if deck1_name == deck2_name:
             continue  # Skip matchups with the same fighter
 
-        fighter1_id = fighter_ids[fighter1_name]
-        fighter2_id = fighter_ids[fighter2_name]
+        deck1_id = deck_ids[deck1_name]
+        deck2_id = deck_ids[deck2_name]
 
-        plays = df_plays.loc[
-            df_plays["category"] == fighter2_name, fighter1_name
+        plays = df_plays.loc[df_plays["Deck Name"] == deck2_name, deck1_name].values[0]
+        deck1_winrate = df_winrate.loc[
+            df_winrate["Deck Name"] == deck2_name, deck1_name
         ].values[0]
-        fighter1_winrate = df_winrate.loc[
-            df_winrate["category"] == fighter2_name, fighter1_name
-        ].values[0]
-        fighter2_winrate = df_winrate.loc[
-            df_winrate["category"] == fighter1_name, fighter2_name
+        deck2_winrate = df_winrate.loc[
+            df_winrate["Deck Name"] == deck1_name, deck2_name
         ].values[0]
 
         plays = int(plays)
-        fighter1_winrate = float(fighter1_winrate)
-        fighter2_winrate = float(fighter2_winrate)
+        deck1_winrate = float(deck1_winrate)
+        deck2_winrate = float(deck2_winrate)
 
         # Check for existing matchup in either direction
         existing_matchup = (
             db_session.query(Matchup)
             .filter(
-                (
-                    (Matchup.fighter1_id == fighter1_id)
-                    & (Matchup.fighter2_id == fighter2_id)
-                )
-                | (
-                    (Matchup.fighter1_id == fighter2_id)
-                    & (Matchup.fighter2_id == fighter1_id)
-                )
+                ((Matchup.deck1_id == deck1_id) & (Matchup.deck2_id == deck2_id))
+                | ((Matchup.deck1_id == deck2_id) & (Matchup.deck2_id == deck1_id))
             )
             .first()
         )
@@ -97,11 +87,11 @@ def insert_matchup_data(db_session, df_plays, df_winrate):
         if not existing_matchup:
             db_session.add(
                 Matchup(
-                    fighter1_id=fighter1_id,
-                    fighter2_id=fighter2_id,
+                    deck1_id=deck1_id,
+                    deck2_id=deck2_id,
                     plays=plays,
-                    fighter1_winrate=fighter1_winrate,
-                    fighter2_winrate=fighter2_winrate,
+                    deck1_winrate=deck1_winrate,
+                    deck2_winrate=deck2_winrate,
                 )
             )
 
@@ -207,3 +197,5 @@ if __name__ == "__main__":
         insert_special_abilities(session, df_decks)
         print("Inserting fighter data...")
         insert_fighter_data(session, df_fighters)
+        print("Inserting matchup data...")
+        insert_matchup_data(session, df_matchup_plays, df_matchup_winrate)
