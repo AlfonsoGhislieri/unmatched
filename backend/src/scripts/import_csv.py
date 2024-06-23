@@ -102,6 +102,8 @@ def insert_card_data(db_session, df):
     # Create a map from deck name to deck ID
     deck_id_map = {name: id for id, name in db_session.query(Deck.id, Deck.name).all()}
 
+    print(df)
+
     # Filter relevant columns for cards
     card_columns = [
         "Deck Name",
