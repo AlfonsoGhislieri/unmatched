@@ -47,7 +47,6 @@ def insert_fighter_data(db_session, df):
     db_session.commit()
 
 
-# Insert matchup data
 def insert_matchup_data(db_session, df_plays, df_winrate):
     # Create a dictionary to map fighter names to their IDs
     fighter_ids = {
@@ -131,7 +130,57 @@ def insert_deck_data(db_session, df, df_deck_stats):
     db_session.commit()
 
 
-# def insert_special_abilities(db_session, df):
+def insert_special_abilities(db_session, df):
+    # Filter relevant columns
+    special_abilities_columns = [
+        "Deck Name",
+        "Special Ability 1 Name",
+        "Special Ability 1 Description",
+        "Special Ability 2 Name",
+        "Special Ability 2 Description",
+        "Special Ability 3 Name",
+        "Special Ability 3 Description",
+        "Notes",
+    ]
+    df_filtered = df[special_abilities_columns]
+
+    # Convert DataFrame to list of dictionaries
+    special_abilities_list = df_filtered.to_dict(orient="records")
+
+    # Create a map from deck name to deck ID
+    deck_id_map = {name: id for id, name in db_session.query(Deck.id, Deck.name).all()}
+
+    # Array to store individually split up special abilities
+    special_abilities = []
+
+    for row in special_abilities_list:
+        deck_id = deck_id_map.get(row["Deck Name"])
+
+        for i in range(1, 4):
+            description_key = f"Special Ability {i} Description"
+            name_key = f"Special Ability {i} Name"
+
+            if pd.notna(row.get(description_key)):
+                special_abilities.append(
+                    {
+                        "deck_id": deck_id,
+                        "name": row.get(name_key),
+                        "description": row[description_key],
+                        "notes": (
+                            row.get("Notes")
+                            if i == 1
+                            and pd.notna(
+                                row.get("Notes")
+                            )  # There should only be 1 notes property for each deck max
+                            else None
+                        ),
+                    }
+                )
+
+    # Insert special abilities
+    if special_abilities:
+        db_session.execute(insert(SpecialAbility), special_abilities)
+        db_session.commit()
 
 
 if __name__ == "__main__":
@@ -154,7 +203,7 @@ if __name__ == "__main__":
     with session_local() as session:
         print("Inserting deck data...")
         insert_deck_data(session, df_decks, df_deck_stats)
-        # print("Inserting special ability data...")
-        # insert_special_abilities(session, df_decks)
+        print("Inserting special ability data...")
+        insert_special_abilities(session, df_decks)
         print("Inserting fighter data...")
         insert_fighter_data(session, df_fighters)
