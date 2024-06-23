@@ -12,20 +12,38 @@ from db.database import get_session_engine
 from db.models.base import Base
 from db.models.card import Card
 from db.models.deck import Deck
-from db.models.fighters import Fighter
+from db.models.fighters import Fighter, FighterType, RangeType
 from db.models.matchups import Matchup
 from db.models.special_ability import SpecialAbility
 
 
-# Insert Fighter data
 def insert_fighter_data(db_session, df):
-    for _, row in df.iterrows():
-        name = row["category"]
-        winrate = float(row["Win Percentage"]) * 100
-        plays = int(row["Number of Plays"])
+    # Rename columns
+    df = df.rename(
+        columns={
+            "Fighter Name": "name",
+            "Fighter Type": "fighter_type",
+            "Movement": "movement",
+            "Starting HP": "starting_hp",
+            "Range Type": "range_type",
+            "Total Fighters": "total_fighters",
+        }
+    )
 
-        db_session.add(Fighter(name=name, plays=plays, winrate=winrate))
+    # Map Deck Name to Deck ID
+    deck_id_map = {name: id for id, name in db_session.query(Deck.id, Deck.name).all()}
+    df["deck_id"] = df["Deck Name"].map(deck_id_map)
+    df = df.drop(columns=["Deck Name"])  # Drop the original Deck Name column
 
+    # Convert string values to Enum types using map
+    df["fighter_type"] = df["fighter_type"].map(FighterType)
+    df["range_type"] = df["range_type"].map(RangeType)
+
+    # Convert to list of dictionaries
+    df_dict = df.to_dict(orient="records")
+
+    # Insert into database
+    db_session.execute(insert(Fighter), df_dict)
     db_session.commit()
 
 
@@ -113,6 +131,9 @@ def insert_deck_data(db_session, df, df_deck_stats):
     db_session.commit()
 
 
+# def insert_special_abilities(db_session, df):
+
+
 if __name__ == "__main__":
     session_local, engine = get_session_engine()
     Base.metadata.drop_all(engine)
@@ -131,5 +152,9 @@ if __name__ == "__main__":
     df_matchup_winrate = pd.read_excel(xls, "Matchup-Winrate")
 
     with session_local() as session:
-        print("Inserting dec data...")
+        print("Inserting deck data...")
         insert_deck_data(session, df_decks, df_deck_stats)
+        # print("Inserting special ability data...")
+        # insert_special_abilities(session, df_decks)
+        print("Inserting fighter data...")
+        insert_fighter_data(session, df_fighters)

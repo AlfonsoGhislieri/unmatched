@@ -18,10 +18,11 @@ def test_create_fighter(test_session):
 
 
 def test_unique_fighter_name(test_session):
-    FighterFactory(name="Achilles")
+    deck = DeckFactory()
+    FighterFactory(name="Achilles", deck=deck)
 
     with pytest.raises(IntegrityError):
-        FighterFactory(name="Achilles")
+        FighterFactory(name="Achilles", deck=deck)
 
 
 def test_create_matchup(test_session):
