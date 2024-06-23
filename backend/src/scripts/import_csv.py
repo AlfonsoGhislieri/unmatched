@@ -10,7 +10,7 @@ from sqlalchemy import insert
 
 from db.database import get_session_engine
 from db.models.base import Base
-from db.models.card import Card
+from db.models.card import Card, CardType
 from db.models.deck import Deck
 from db.models.fighters import Fighter, FighterType, RangeType
 from db.models.matchups import Matchup
@@ -36,8 +36,8 @@ def insert_fighter_data(db_session, df):
     df = df.drop(columns=["Deck Name"])  # Drop the original Deck Name column
 
     # Convert string values to Enum types using map
-    df["fighter_type"] = df["fighter_type"].map(FighterType)
-    df["range_type"] = df["range_type"].map(RangeType)
+    df["fighter_type"] = df["fighter_type"].map(lambda x: FighterType[x.upper()])
+    df["range_type"] = df["range_type"].map(lambda x: RangeType[x.upper()])
 
     # Convert to list of dictionaries
     df_dict = df.to_dict(orient="records")
@@ -96,6 +96,77 @@ def insert_matchup_data(db_session, df_plays, df_winrate):
             )
 
     db_session.commit()
+
+
+def insert_card_data(db_session, df):
+    # Create a map from deck name to deck ID
+    deck_id_map = {name: id for id, name in db_session.query(Deck.id, Deck.name).all()}
+
+    # Filter relevant columns for cards
+    card_columns = [
+        "Deck Name",
+        "Unique Attack",
+        "Unqiue Versatile",
+        "Unique Defense",
+        "Unique Scheme",
+        "Total Attack ",
+        "Total Versatile ",
+        "Total Defense",
+        "Total Scheme",
+        "Total Value Attack",
+        "Total Value Versatile",
+        "Total Value Defense",
+    ]
+    df_filtered = df[card_columns]
+
+    # Fill NaN values with 0 for all columns
+    df_filtered = df_filtered.fillna(0)
+
+    # Manually set 'Total Scheme' back to NaN
+    df_filtered["Total Scheme"] = df["Total Scheme"]
+
+    # Convert DataFrame to list of dictionaries
+    filtered_deck_data = df_filtered.to_dict(orient="records")
+
+    cards_to_insert = []
+
+    for deck_row in filtered_deck_data:
+        deck_id = deck_id_map.get(deck_row["Deck Name"])
+
+        if deck_id:
+            card_types = {
+                "Attack": {
+                    "quantity": deck_row["Unique Attack"],
+                    "total_value": deck_row["Total Value Attack"],
+                },
+                "Versatile": {
+                    "quantity": deck_row["Unqiue Versatile"],
+                    "total_value": deck_row["Total Value Versatile"],
+                },
+                "Defense": {
+                    "quantity": deck_row["Unique Defense"],
+                    "total_value": deck_row["Total Value Defense"],
+                },
+                "Scheme": {
+                    "quantity": deck_row["Unique Scheme"],
+                    "total_value": None,  # Scheme cards don't have values
+                },
+            }
+
+            for card_type, values in card_types.items():
+                cards_to_insert.append(
+                    {
+                        "deck_id": deck_id,
+                        "type": CardType[card_type.upper()],
+                        "quantity": values["quantity"],
+                        "total_value": values["total_value"],
+                    }
+                )
+
+    # Insert cards
+    if cards_to_insert:
+        db_session.execute(insert(Card), cards_to_insert)
+        db_session.commit()
 
 
 def insert_deck_data(db_session, df, df_deck_stats):
@@ -197,5 +268,7 @@ if __name__ == "__main__":
         insert_special_abilities(session, df_decks)
         print("Inserting fighter data...")
         insert_fighter_data(session, df_fighters)
+        print("Inserting card data...")
+        insert_card_data(session, df_decks)
         print("Inserting matchup data...")
         insert_matchup_data(session, df_matchup_plays, df_matchup_winrate)
