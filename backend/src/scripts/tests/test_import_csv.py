@@ -15,7 +15,6 @@ from scripts.import_csv import (
 def test_insert_deck_data(test_session, mock_decks_df, mock_deck_stats_df):
     insert_deck_data(test_session, mock_decks_df, mock_deck_stats_df)
 
-    # Query the database to check if the data was inserted correctly
     decks = test_session.query(Deck).all()
     assert len(decks) == 2
 
@@ -39,10 +38,8 @@ def test_insert_fighter_data(
     # Insert deck data first since fighter data depends on it
     insert_deck_data(test_session, mock_decks_df, mock_deck_stats_df)
 
-    # Insert fighter data
     insert_fighter_data(test_session, mock_fighters_df)
 
-    # Check if data was inserted correctly
     fighters = test_session.query(Fighter).all()
     assert len(fighters) == len(mock_fighters_df)
     assert fighters[0].name == "Achilles"
@@ -55,7 +52,6 @@ def test_insert_fighter_data(
 
 def test_insert_matchup_data(
     test_session,
-    mock_fighters_df,
     mock_matchup_plays_df,
     mock_matchup_winrate_df,
     mock_decks_df,
@@ -63,16 +59,13 @@ def test_insert_matchup_data(
 ):
     # Insert deck data first since fighter data depends on it
     insert_deck_data(test_session, mock_decks_df, mock_deck_stats_df)
-    insert_fighter_data(test_session, mock_fighters_df)
 
-    # Insert matchup data
     insert_matchup_data(test_session, mock_matchup_plays_df, mock_matchup_winrate_df)
 
-    # Check if matchup data was inserted correctly
     matchups = test_session.query(Matchup).all()
     assert len(matchups) == 1
 
-    # Retrieve fighters
+    # Retrieve decks
     achilles = test_session.query(Deck).filter_by(name="Achilles").first()
     alice = test_session.query(Deck).filter_by(name="Alice").first()
 
@@ -90,10 +83,8 @@ def test_insert_special_abilities(test_session, mock_decks_df, mock_deck_stats_d
     # Insert deck data first since special abilities data depends on it
     insert_deck_data(test_session, mock_decks_df, mock_deck_stats_df)
 
-    # Insert special abilities data
     insert_special_abilities(test_session, mock_decks_df)
 
-    # Check if data was inserted correctly
     special_abilities = test_session.query(SpecialAbility).all()
     assert len(special_abilities) == 2
 
@@ -109,10 +100,8 @@ def test_insert_card_data(test_session, mock_decks_df, mock_deck_stats_df):
     # Insert deck data first since card data depends on it
     insert_deck_data(test_session, mock_decks_df, mock_deck_stats_df)
 
-    # Insert card data
     insert_card_data(test_session, mock_decks_df)
 
-    # Check if data was inserted correctly
     cards = test_session.query(Card).all()
     assert len(cards) == 8  # 4 types of cards for 2 decks
     assert cards[0].type == CardType.ATTACK
