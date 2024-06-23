@@ -23,7 +23,6 @@ class DeckFactory(BaseFactory):
     plays = factory.Faker("random_int", min=1, max=1000)
     winrate = factory.Faker("pyfloat", positive=True, max_value=100)
     set = factory.Faker("word")
-    movement = factory.Faker("random_int", min=1, max=10)
 
     @factory.post_generation
     def add_cards(self, create, extracted, **kwargs):
@@ -66,6 +65,7 @@ class FighterFactory(BaseFactory):
     deck = factory.SubFactory(DeckFactory)
     name = factory.Faker("name")
     starting_hp = factory.Faker("random_int", min=1, max=100)
+    movement = factory.Faker("random_int", min=1, max=10)
     range_type = factory.Faker(
         "random_element", elements=[RangeType.RANGED, RangeType.MELEE]
     )

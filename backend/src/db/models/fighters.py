@@ -24,6 +24,7 @@ class Fighter(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, unique=True, nullable=False)
     starting_hp = Column(Integer, nullable=False)
+    movement = Column(Integer, nullable=False)
     range_type = Column(SqlEnum(RangeType), nullable=False)
     fighter_type = Column(SqlEnum(FighterType), nullable=False)
     total_fighters = Column(Integer, nullable=False)

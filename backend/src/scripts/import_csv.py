@@ -6,11 +6,15 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import itertools
 
 import pandas as pd
+from sqlalchemy import insert
 
 from db.database import get_session_engine
 from db.models.base import Base
+from db.models.card import Card
+from db.models.deck import Deck
 from db.models.fighters import Fighter
 from db.models.matchups import Matchup
+from db.models.special_ability import SpecialAbility
 
 
 # Insert Fighter data
@@ -87,31 +91,45 @@ def insert_matchup_data(db_session, df_plays, df_winrate):
     db_session.commit()
 
 
+def insert_deck_data(db_session, df, df_deck_stats):
+    # Merge to get all deck stats
+    df_merged = pd.merge(df, df_deck_stats, on="Deck Name", how="inner")
+
+    # Fill missing values, rename columns, and select relevant columns
+    df_merged = df_merged.fillna({"Number of Plays": 0, "Win Percentage": 0.0}).rename(
+        columns={
+            "Deck Name": "name",
+            "Set": "set",
+            "Number of Plays": "plays",
+            "Win Percentage": "winrate",
+        }
+    )[["name", "set", "plays", "winrate"]]
+
+    # Convert to list of dictionaries
+    deck_dict = df_merged.to_dict(orient="records")
+
+    # Insert into database
+    db_session.execute(insert(Deck), deck_dict)
+    db_session.commit()
+
+
 if __name__ == "__main__":
     session_local, engine = get_session_engine()
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
-    # Read CSV data
-    df_fighters = pd.read_csv(
+    # Open excel file
+    xls = pd.ExcelFile(
         os.path.abspath(
-            os.path.join(os.path.dirname(__file__), "..", "data", "fighter-stats.csv")
+            os.path.join(os.path.dirname(__file__), "..", "data", "deck-fighter.xls")
         )
     )
-    df_matchup_plays = pd.read_csv(
-        os.path.abspath(
-            os.path.join(os.path.dirname(__file__), "..", "data", "matchup-plays.csv")
-        )
-    )
-    df_matchup_winrate = pd.read_csv(
-        os.path.abspath(
-            os.path.join(os.path.dirname(__file__), "..", "data", "matchup-winrate.csv")
-        )
-    )
+    df_decks = pd.read_excel(xls, "Decks")
+    df_deck_stats = pd.read_excel(xls, "Deck-Stats")
+    df_fighters = pd.read_excel(xls, "Fighters")
+    df_matchup_plays = pd.read_excel(xls, "Matchup-Plays")
+    df_matchup_winrate = pd.read_excel(xls, "Matchup-Winrate")
 
     with session_local() as session:
-        print("Inserting fighter data...")
-        insert_fighter_data(session, df_fighters)
-        print("Inserting matchup data...")
-        insert_matchup_data(session, df_matchup_plays, df_matchup_winrate)
-        print("Data saved.")
+        print("Inserting dec data...")
+        insert_deck_data(session, df_decks, df_deck_stats)
