@@ -10,8 +10,8 @@ class SpecialAbility(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     deck_id = Column(Integer, ForeignKey("decks.id"), nullable=False)
     name = Column(String, nullable=True)
-    description = Column(Text)
-    notes = Column(String, nullable=True)
+    description = Column(Text, nullable=False)
+    notes = Column(Text, nullable=True)
 
     deck = relationship("Deck", back_populates="special_abilities")
 

@@ -20,10 +20,9 @@ def test_read_deck(client: TestClient):
     CardFactory(type=CardType.SCHEME, deck=deck)
 
     response = client.get(f"decks/{deck.id}")
+    response_data = response.json()
 
     assert response.status_code == 200
-
-    response_data = response.json()
     assert response_data["id"] == deck.id
     assert response_data["name"] == deck.name
     assert response_data["plays"] == deck.plays

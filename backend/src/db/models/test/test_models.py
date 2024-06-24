@@ -18,13 +18,13 @@ from factories.b_factory import (
 def test_create_fighter(test_session):
     fighter = FighterFactory()
 
-    # Retrieve the fighter from the database
     retrieved_fighter = test_session.query(Fighter).filter_by(name=fighter.name).first()
+
     assert retrieved_fighter is not None
     assert retrieved_fighter.name == fighter.name
 
 
-def test_unique_fighter_name(test_session):
+def test_unique_fighter_name():
     deck = DeckFactory()
     FighterFactory(name="Achilles", deck=deck)
 
@@ -49,7 +49,7 @@ def test_create_matchup(test_session):
     assert retrieved_matchup.deck2_winrate == matchup.deck2_winrate
 
 
-def test_unique_matchup(test_session):
+def test_unique_matchup():
     deck1 = DeckFactory()
     deck2 = DeckFactory()
 
@@ -67,10 +67,8 @@ def test_create_cards(test_session):
     CardFactory(type=CardType.DEFENSE, deck=deck)
     CardFactory(type=CardType.SCHEME, deck=deck)
 
-    # Query the deck
     deck = test_session.query(Deck).filter_by(id=deck.id).first()
 
-    # Check that the deck has the required cards
     attack_card = (
         test_session.query(Card)
         .filter_by(deck_id=deck.id, type=CardType.ATTACK)
@@ -102,17 +100,16 @@ def test_create_card_unique(test_session):
     deck = DeckFactory()
     CardFactory(deck=deck, type=CardType.ATTACK)
 
-    # Check that the initially created card is correctly associated with the deck
     retrieved_card = (
         test_session.query(Card)
         .filter_by(deck_id=deck.id, type=CardType.ATTACK)
         .first()
     )
+
     assert retrieved_card is not None
     assert retrieved_card.type == CardType.ATTACK
     assert retrieved_card.deck_id == deck.id
 
-    # Attempt to create another card of the same type should raise an IntegrityError
     with pytest.raises(IntegrityError):
         CardFactory(deck=deck, type=CardType.ATTACK)
 
@@ -179,6 +176,7 @@ def test_create_special_ability(test_session):
     retrieved_special_ability = (
         test_session.query(SpecialAbility).filter_by(id=special_ability.id).first()
     )
+
     assert retrieved_special_ability is not None
     assert retrieved_special_ability.name == special_ability.name
     assert retrieved_special_ability.description == special_ability.description
@@ -201,6 +199,7 @@ def test_special_ability_without_name_notes(test_session):
     retrieved_special_ability = (
         test_session.query(SpecialAbility).filter_by(id=special_ability.id).first()
     )
+
     assert retrieved_special_ability is not None
     assert retrieved_special_ability.name is None
     assert retrieved_special_ability.description == special_ability.description
