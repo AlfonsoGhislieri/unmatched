@@ -24,11 +24,12 @@ function SelectGrid(props: SelectGridProps) {
       return;
     }
     const selectElement = document.getElementById(`select-${props.heroes[id]}`);
-    const delay = isElementInViewport(selectElement) ? msFlipCascadeDelay : 0;
-    setTimeout(() => {
+    const flip = () => {
       if (props.heroes[id] != target) selectElement?.classList.add('flip');
       animateCascadingFlipRecursive(id + 1, target);
-    }, delay);
+    };
+    if (isElementInViewport(selectElement)) setTimeout(flip, msFlipCascadeDelay);
+    else flip();
   };
 
   return selectedId != '' ? (
@@ -45,60 +46,4 @@ function SelectGrid(props: SelectGridProps) {
   );
 }
 
-const allHeroes = [
-  'Achilles',
-  'Alice',
-  'Angel',
-  'AnnieChristmas',
-  'Beowulf',
-  'Bigfoot',
-  'BlackPanther',
-  'BlackWidow',
-  'BloodyMary',
-  'BruceLee',
-  'Buffy',
-  'Bullseye',
-  'CloakAndDagger',
-  'Daredevil',
-  'Deadpool',
-  'Dracula',
-  'DrSattler',
-  'DoctorStrange',
-  'Elektra',
-  'GhostRider',
-  'GoldenBat',
-  'Hamlet',
-  'Houdini',
-  'InGen',
-  'InvisibleMan',
-  'JekyllAndHyde',
-  'JillTrent',
-  'KingArthur',
-  'LittleRed',
-  'LukeCage',
-  'Medusa',
-  'MoonKnight',
-  'MsMarvel',
-  'NikolaTesla',
-  'OdaNobunaga',
-  'Raptors',
-  'RobinHood',
-  'Shakespeare',
-  'SheHulk',
-  'SherlockHolmes',
-  'Sinbad',
-  'SpiderMan',
-  'Spike',
-  'SquirrelGirl',
-  'SunWukong',
-  'Titania',
-  'TheGenie',
-  'TomoeGozen',
-  'TRex',
-  'WaywardSisters',
-  'Willow',
-  'WinterSoldier',
-  'Yennenga',
-];
-
-export { SelectGrid, allHeroes };
+export { SelectGrid };

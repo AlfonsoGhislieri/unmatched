@@ -1,20 +1,20 @@
-import { SelectGrid, allHeroes } from 'components/SelectGrid';
-
+import { Filter } from 'components/Filter';
 import { Outlet } from 'react-router-dom';
-import { SelectGridFilter } from 'components/SelectGridFilter';
+import { SelectGrid } from 'components/SelectGrid';
+import { allHeroes } from 'assets/DBMock';
 import { useState } from 'react';
 
 const Heroes = () => {
   const [heroesList, setHeroesList] = useState(allHeroes);
 
-  const handleFilterChange = (query: string) => {
-    setHeroesList(allHeroes.filter((hero) => hero.toLowerCase().includes(query.toLowerCase())));
+  const handleFilterChange = (heroes: string[]) => {
+    setHeroesList(heroes);
   };
 
   return (
     <div>
       <h1>Heroes Page</h1>
-      <SelectGridFilter onFilterChange={handleFilterChange} />
+      <Filter onFilterChange={handleFilterChange} items={allHeroes} />
       <SelectGrid heroes={heroesList} />
       <Outlet />
     </div>
