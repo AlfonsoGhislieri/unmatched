@@ -14,7 +14,7 @@ class Deck(Base):
     set = Column(String, nullable=False)  # set the deck belongs to
 
     cards = relationship("Card", back_populates="deck")
-    special_abilities = relationship("SpecialAbility", back_populates="decks")
+    special_abilities = relationship("SpecialAbility", back_populates="deck")
     fighters = relationship("Fighter", back_populates="deck")
     matchups_deck1 = relationship(
         "Matchup", foreign_keys="[Matchup.deck1_id]", back_populates="deck1"

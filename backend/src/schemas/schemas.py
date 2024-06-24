@@ -1,6 +1,29 @@
+from typing import List, Optional
+
 from pydantic import BaseModel, ConfigDict  # pylint: disable=E0611
 
+from db.models.card import CardType
 from db.models.fighters import FighterType, RangeType
+
+
+class CardSchema(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    deck_id: int
+    type: CardType
+    quantity: int
+    total_value: Optional[int]
+
+
+class SpecialAbilitySchema(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    deck_id: int
+    name: Optional[str]
+    description: str
+    notes: Optional[str]
 
 
 class FighterSchema(BaseModel):
@@ -14,6 +37,19 @@ class FighterSchema(BaseModel):
     fighter_type: FighterType
     total_fighters: int
     deck_id: int
+
+
+class DeckSchema(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    name: str
+    set: str
+    plays: int
+    winrate: float
+    cards: List[CardSchema] = []
+    fighters: List[FighterSchema] = []
+    special_abilities: List[SpecialAbilitySchema] = []
 
 
 class MatchupSchema(BaseModel):

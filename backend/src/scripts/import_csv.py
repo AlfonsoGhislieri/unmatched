@@ -21,10 +21,6 @@ def get_deck_id_map(db_session):
     return {name: id for id, name in db_session.query(Deck.id, Deck.name).all()}
 
 
-def fill_na_values(df, fillna_dict):
-    return df.fillna(fillna_dict)
-
-
 def rename_columns(df, columns_dict):
     return df.rename(columns=columns_dict)
 
@@ -119,11 +115,7 @@ def insert_card_data(db_session, df):
         "Total Value Defense",
     ]
     df_filtered = df[card_columns]
-
-    # Fill NaN values with 0 for all columns
     df_filtered = df_filtered.fillna(0)
-    # Manually set 'Total Scheme' back to NaN
-    df_filtered["Total Scheme"] = df["Total Scheme"]
 
     filtered_deck_data = df_filtered.to_dict(orient="records")
     cards_to_insert = []
@@ -195,9 +187,11 @@ def insert_special_abilities(db_session, df):
         "Notes",
     ]
     df_filtered = df[special_abilities_columns]
+    df_filtered = df_filtered.fillna(pd.NA)
 
     special_abilities_list = df_filtered.to_dict(orient="records")
     deck_id_map = get_deck_id_map(db_session)
+
     special_abilities = []
 
     for row in special_abilities_list:
@@ -213,14 +207,7 @@ def insert_special_abilities(db_session, df):
                         "deck_id": deck_id,
                         "name": row.get(name_key),
                         "description": row[description_key],
-                        "notes": (
-                            row.get("Notes")
-                            if i == 1
-                            and pd.notna(
-                                row.get("Notes")
-                            )  # There should only be 1 notes property for each deck max
-                            else None
-                        ),
+                        "notes": row.get("Notes"),
                     }
                 )
 

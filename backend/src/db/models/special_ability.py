@@ -13,4 +13,4 @@ class SpecialAbility(Base):
     description = Column(Text)
     notes = Column(String, nullable=True)
 
-    decks = relationship("Deck", back_populates="special_abilities")
+    deck = relationship("Deck", back_populates="special_abilities")
