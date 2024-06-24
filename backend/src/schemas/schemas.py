@@ -1,9 +1,34 @@
-from pydantic import BaseModel  # pylint: disable=E0611
+from typing import List, Optional
 
+from pydantic import BaseModel, ConfigDict  # pylint: disable=E0611
+
+from db.models.card import CardType
 from db.models.fighters import FighterType, RangeType
 
 
+class CardSchema(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    deck_id: int
+    type: CardType
+    quantity: int
+    total_value: Optional[int]
+
+
+class SpecialAbilitySchema(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    deck_id: int
+    name: Optional[str]
+    description: str
+    notes: Optional[str]
+
+
 class FighterSchema(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     name: str
     starting_hp: int
@@ -13,11 +38,23 @@ class FighterSchema(BaseModel):
     total_fighters: int
     deck_id: int
 
-    class Config:
-        orm_mode = True
+
+class DeckSchema(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    name: str
+    set: str
+    plays: int
+    winrate: float
+    cards: List[CardSchema] = []
+    fighters: List[FighterSchema] = []
+    special_abilities: List[SpecialAbilitySchema] = []
 
 
 class MatchupSchema(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     deck1_id: int
     deck2_id: int
@@ -25,16 +62,12 @@ class MatchupSchema(BaseModel):
     deck1_winrate: int
     deck2_winrate: int
 
-    class Config:
-        orm_mode = True
-
 
 class MatchupDetailSchema(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     matchup_id: int
     deck_id: int
     opponent_id: int
     plays: int
     winrate: float
-
-    class Config:
-        orm_mode = True

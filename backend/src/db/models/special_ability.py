@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Text
+from sqlalchemy import Column, ForeignKey, Integer, String, Text, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from .base import Base
@@ -13,4 +13,8 @@ class SpecialAbility(Base):
     description = Column(Text)
     notes = Column(String, nullable=True)
 
-    decks = relationship("Deck", back_populates="special_abilities")
+    deck = relationship("Deck", back_populates="special_abilities")
+
+    __table_args__ = (
+        UniqueConstraint("name", "deck_id", name="_deck_name_special_ability_uc"),
+    )

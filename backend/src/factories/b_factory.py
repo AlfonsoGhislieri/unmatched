@@ -24,17 +24,6 @@ class DeckFactory(BaseFactory):
     winrate = factory.Faker("pyfloat", positive=True, max_value=100)
     set = factory.Faker("word")
 
-    @factory.post_generation
-    def add_cards(self, create, extracted, **kwargs):
-        if not create:
-            return
-
-        # Ensure one card of each type is created
-        CardFactory(deck=self, type=CardType.ATTACK)
-        CardFactory(deck=self, type=CardType.VERSATILE)
-        CardFactory(deck=self, type=CardType.DEFENSE)
-        CardFactory(deck=self, type=CardType.SCHEME)
-
 
 class CardFactory(BaseFactory):
     class Meta:
