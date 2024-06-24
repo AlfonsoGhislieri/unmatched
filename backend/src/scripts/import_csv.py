@@ -103,7 +103,7 @@ def insert_card_data(db_session, df):
     card_columns = [
         "Deck Name",
         "Unique Attack",
-        "Unqiue Versatile",
+        "Unique Versatile",
         "Unique Defense",
         "Unique Scheme",
         "Total Attack ",
@@ -129,13 +129,13 @@ def insert_card_data(db_session, df):
                     "quantity": deck_row["Unique Attack"],
                     "total_value": deck_row["Total Value Attack"],
                 },
-                "Versatile": {
-                    "quantity": deck_row["Unqiue Versatile"],
-                    "total_value": deck_row["Total Value Versatile"],
-                },
                 "Defense": {
                     "quantity": deck_row["Unique Defense"],
                     "total_value": deck_row["Total Value Defense"],
+                },
+                "Versatile": {
+                    "quantity": deck_row["Unique Versatile"],
+                    "total_value": deck_row["Total Value Versatile"],
                 },
                 "Scheme": {
                     "quantity": deck_row["Unique Scheme"],

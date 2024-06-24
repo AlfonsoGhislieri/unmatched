@@ -26,7 +26,7 @@ def mock_decks_df():
         "Total Defense": [10, 4],
         "Total Scheme": [2, 2],
         "Unique Attack": [4, 5],
-        "Unqiue Versatile": [5, 7],
+        "Unique Versatile": [5, 7],
         "Unique Defense": [2, 1],
         "Unique Scheme": [1, 2],
         "Total Value Attack": [27, 24],
