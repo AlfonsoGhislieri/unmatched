@@ -1,14 +1,14 @@
 from typing import List
 
 from db.models.matchups import Matchup
-from schemas.schemas import MatchupDetailSchema
+from schemas.schemas import DeckInMatchupSchema
 
 
 def normalize_matchup_data(
     matchups: List[Matchup], selected_deck_id: int
-) -> List[MatchupDetailSchema]:
+) -> List[DeckInMatchupSchema]:
     return [
-        MatchupDetailSchema(
+        DeckInMatchupSchema(
             matchup_id=matchup.id,
             deck_id=selected_deck_id,
             opponent_id=(

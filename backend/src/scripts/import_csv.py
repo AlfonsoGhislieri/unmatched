@@ -198,19 +198,19 @@ def insert_special_abilities(db_session, df):
         deck_id = deck_id_map.get(row["Deck Name"])
 
         for i in range(1, 4):
-            description_key = f"Special Ability {i} Description"
-            name_key = f"Special Ability {i} Name"
+            description = row.get(f"Special Ability {i} Description")
+            name = row.get(f"Special Ability {i} Name")
+            notes = row.get("Notes")
 
-            if pd.notna(row.get(description_key)):
+            if pd.notna(description):
                 special_abilities.append(
                     {
                         "deck_id": deck_id,
-                        "name": row.get(name_key),
-                        "description": row[description_key],
-                        "notes": row.get("Notes"),
+                        "name": name.strip() if name else None,
+                        "description": description.strip() if description else None,
+                        "notes": notes.strip() if notes else None,
                     }
                 )
-
     if special_abilities:
         db_session.execute(insert(SpecialAbility), special_abilities)
         db_session.commit()

@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from db.models.matchups import Matchup
 from routes.dependencies import get_db
 from routes.helpers.helpers import normalize_matchup_data
-from schemas.schemas import MatchupDetailSchema, MatchupSchema
+from schemas.schemas import DeckInMatchupSchema, MatchupSchema
 
 router = APIRouter()
 
@@ -25,7 +25,7 @@ def read_matchup(matchup_id: int, db: Session = Depends(get_db)):
     return matchup
 
 
-@router.get("/deck/{deck_id}", response_model=List[MatchupDetailSchema])
+@router.get("/deck/{deck_id}", response_model=List[DeckInMatchupSchema])
 def read_matchups_by_deck(deck_id: int, db: Session = Depends(get_db)):
     matchups = (
         db.query(Matchup)
