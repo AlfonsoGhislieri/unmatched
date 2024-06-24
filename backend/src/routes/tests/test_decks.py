@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 
+from db.models.card import CardType
 from factories.b_factory import (
     CardFactory,
     DeckFactory,
@@ -13,6 +14,10 @@ def test_read_deck(client: TestClient):
 
     FighterFactory.create_batch(2, deck=deck)
     SpecialAbilityFactory.create_batch(2, deck=deck)
+    CardFactory(type=CardType.ATTACK, deck=deck)
+    CardFactory(type=CardType.VERSATILE, deck=deck)
+    CardFactory(type=CardType.DEFENSE, deck=deck)
+    CardFactory(type=CardType.SCHEME, deck=deck)
 
     response = client.get(f"decks/{deck.id}")
 

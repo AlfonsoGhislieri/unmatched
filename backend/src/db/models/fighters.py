@@ -32,4 +32,6 @@ class Fighter(Base):
 
     deck = relationship("Deck", back_populates="fighters")
 
-    __table_args__ = (UniqueConstraint("name", "deck_id", name="_deck_fighter_uc"),)
+    __table_args__ = (
+        UniqueConstraint("name", "deck_id", name="_deck_name_fighter_uc"),
+    )
