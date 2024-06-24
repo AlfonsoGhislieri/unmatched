@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from pydantic import BaseModel, ConfigDict  # pylint: disable=E0611
+from pydantic import BaseModel, ConfigDict
 
 from db.models.card import CardType
 from db.models.fighters import FighterType, RangeType
@@ -59,11 +59,11 @@ class MatchupSchema(BaseModel):
     deck1_id: int
     deck2_id: int
     plays: int
-    deck1_winrate: int
-    deck2_winrate: int
+    deck1_winrate: float
+    deck2_winrate: float
 
 
-class MatchupDetailSchema(BaseModel):
+class DeckInMatchupSchema(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     matchup_id: int

@@ -103,7 +103,7 @@ def insert_card_data(db_session, df):
     card_columns = [
         "Deck Name",
         "Unique Attack",
-        "Unqiue Versatile",
+        "Unique Versatile",
         "Unique Defense",
         "Unique Scheme",
         "Total Attack ",
@@ -129,13 +129,13 @@ def insert_card_data(db_session, df):
                     "quantity": deck_row["Unique Attack"],
                     "total_value": deck_row["Total Value Attack"],
                 },
-                "Versatile": {
-                    "quantity": deck_row["Unqiue Versatile"],
-                    "total_value": deck_row["Total Value Versatile"],
-                },
                 "Defense": {
                     "quantity": deck_row["Unique Defense"],
                     "total_value": deck_row["Total Value Defense"],
+                },
+                "Versatile": {
+                    "quantity": deck_row["Unique Versatile"],
+                    "total_value": deck_row["Total Value Versatile"],
                 },
                 "Scheme": {
                     "quantity": deck_row["Unique Scheme"],
@@ -198,19 +198,19 @@ def insert_special_abilities(db_session, df):
         deck_id = deck_id_map.get(row["Deck Name"])
 
         for i in range(1, 4):
-            description_key = f"Special Ability {i} Description"
-            name_key = f"Special Ability {i} Name"
+            description = row.get(f"Special Ability {i} Description")
+            name = row.get(f"Special Ability {i} Name")
+            notes = row.get("Notes")
 
-            if pd.notna(row.get(description_key)):
+            if pd.notna(description):
                 special_abilities.append(
                     {
                         "deck_id": deck_id,
-                        "name": row.get(name_key),
-                        "description": row[description_key],
-                        "notes": row.get("Notes"),
+                        "name": name.strip() if name else None,
+                        "description": description.strip() if description else None,
+                        "notes": notes.strip() if notes else None,
                     }
                 )
-
     if special_abilities:
         db_session.execute(insert(SpecialAbility), special_abilities)
         db_session.commit()
