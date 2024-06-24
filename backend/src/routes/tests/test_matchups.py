@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from factories.b_factory import DeckFactory, MatchupFactory
 
 
-def test_read_matchups(client: TestClient, test_session: Session):
+def test_read_matchups(client: TestClient):
     deck1 = DeckFactory(name="Deck 1")
     deck2 = DeckFactory(name="Deck 2")
     deck3 = DeckFactory(name="Deck 3")
@@ -17,12 +17,10 @@ def test_read_matchups(client: TestClient, test_session: Session):
     )
 
     response = client.get("/matchups/")
-    assert response.status_code == 200
-
     matchups = response.json()
-    assert len(matchups) == 2
 
-    print(matchups[0])
+    assert response.status_code == 200
+    assert len(matchups) == 2
 
     assert matchups[0]["deck1_id"] == deck1.id
     assert matchups[0]["deck2_id"] == deck2.id
@@ -37,7 +35,7 @@ def test_read_matchups(client: TestClient, test_session: Session):
     assert matchups[1]["deck2_winrate"] == matchup2.deck2_winrate
 
 
-def test_read_matchup(client: TestClient, test_session: Session):
+def test_read_matchup(client: TestClient):
     deck1 = DeckFactory(name="Deck 1")
     deck2 = DeckFactory(name="Deck 2")
 
@@ -55,17 +53,18 @@ def test_read_matchup(client: TestClient, test_session: Session):
     assert matchup_data["deck1_winrate"] == matchup.deck1_winrate
     assert matchup_data["deck2_winrate"] == matchup.deck2_winrate
 
-    # Test a non-existent matchup
+
+def test_read_matchup_invalid_id(client: TestClient):
     response = client.get("/matchups/999")
     assert response.status_code == 404
     assert response.json()["detail"] == "Matchup not found"
 
 
-def test_read_matchups_by_deck(client: TestClient, test_session: Session):
-    deck1 = DeckFactory(name="Deck 1")
-    deck2 = DeckFactory(name="Deck 2")
-    deck3 = DeckFactory(name="Deck 3")
-    deck4 = DeckFactory(name="Deck 4")  # This deck will not be used
+def test_read_matchups_by_deck(client: TestClient):
+    deck1 = DeckFactory()
+    deck2 = DeckFactory()
+    deck3 = DeckFactory()
+    deck4 = DeckFactory()
 
     MatchupFactory(
         deck1=deck1, deck2=deck2, plays=100, deck1_winrate=55, deck2_winrate=45
