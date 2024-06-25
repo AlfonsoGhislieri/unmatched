@@ -58,6 +58,8 @@ class MatchupSchema(BaseModel):
     id: int
     deck1_id: int
     deck2_id: int
+    deck1_name: str
+    deck2_name: str
     plays: int
     deck1_winrate: float
     deck2_winrate: float
@@ -68,6 +70,8 @@ class DeckInMatchupSchema(BaseModel):
 
     matchup_id: int
     deck_id: int
-    opponent_id: int
+    opponent_deck_id: int
+    deck_name: str
+    opponent_deck_name: str
     plays: int
     winrate: float

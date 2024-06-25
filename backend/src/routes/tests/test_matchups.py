@@ -1,5 +1,4 @@
 from fastapi.testclient import TestClient
-from sqlalchemy.orm import Session
 
 from factories.b_factory import DeckFactory, MatchupFactory
 
@@ -23,13 +22,17 @@ def test_read_matchups(client: TestClient):
     assert len(matchups) == 2
 
     assert matchups[0]["deck1_id"] == deck1.id
+    assert matchups[0]["deck1_name"] == deck1.name
     assert matchups[0]["deck2_id"] == deck2.id
+    assert matchups[0]["deck2_name"] == deck2.name
     assert matchups[0]["plays"] == matchup1.plays
     assert matchups[0]["deck1_winrate"] == matchup1.deck1_winrate
     assert matchups[0]["deck2_winrate"] == matchup1.deck2_winrate
 
     assert matchups[1]["deck1_id"] == deck3.id
+    assert matchups[1]["deck1_name"] == deck3.name
     assert matchups[1]["deck2_id"] == deck1.id
+    assert matchups[1]["deck2_name"] == deck1.name
     assert matchups[1]["plays"] == matchup2.plays
     assert matchups[1]["deck1_winrate"] == matchup2.deck1_winrate
     assert matchups[1]["deck2_winrate"] == matchup2.deck2_winrate
@@ -49,6 +52,8 @@ def test_read_matchup(client: TestClient):
     matchup_data = response.json()
     assert matchup_data["deck1_id"] == deck1.id
     assert matchup_data["deck2_id"] == deck2.id
+    assert matchup_data["deck1_name"] == deck1.name
+    assert matchup_data["deck2_name"] == deck2.name
     assert matchup_data["plays"] == matchup.plays
     assert matchup_data["deck1_winrate"] == matchup.deck1_winrate
     assert matchup_data["deck2_winrate"] == matchup.deck2_winrate
@@ -78,18 +83,20 @@ def test_read_matchups_by_deck(client: TestClient):
 
     # Test for deck1
     response = client.get(f"/matchups/deck/{deck1.id}")
-    print(response.json())
     assert response.status_code == 200
     matchups = response.json()
     assert len(matchups) == 2
 
+    # Sort the matchups by 'matchup_id'
+    matchups = sorted(matchups, key=lambda x: x["matchup_id"])
+
     assert matchups[0]["deck_id"] == deck1.id
-    assert matchups[0]["opponent_id"] == deck2.id
+    assert matchups[0]["opponent_deck_id"] == deck2.id
     assert matchups[0]["plays"] == 100
     assert matchups[0]["winrate"] == 55.0
 
     assert matchups[1]["deck_id"] == deck1.id
-    assert matchups[1]["opponent_id"] == deck3.id
+    assert matchups[1]["opponent_deck_id"] == deck3.id
     assert matchups[1]["plays"] == 200
     assert matchups[1]["winrate"] == 35.0
 
