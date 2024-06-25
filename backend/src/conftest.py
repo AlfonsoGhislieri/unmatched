@@ -8,9 +8,6 @@ from db.models.base import Base
 from factories.b_factory import BaseFactory
 from main import app
 
-DATABASE_URL = f"postgresql://dev_user:dev_password@localhost:5432/unmatched_test"
-engine = create_engine(DATABASE_URL)
-
 
 # Passes session to all factories
 def set_session_factory_for_all_subclasses(session):
@@ -25,10 +22,11 @@ def set_session_factory_for_all_subclasses(session):
 
 @pytest.fixture(scope="module")
 def test_engine():
+    DATABASE_URL = "postgresql://dev_user:dev_password@localhost:5432/unmatched_test"
+    engine = create_engine(DATABASE_URL)
+
     Base.metadata.create_all(engine)
-
     yield engine
-
     Base.metadata.drop_all(engine)
 
 
