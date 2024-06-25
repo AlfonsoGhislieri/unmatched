@@ -3,8 +3,8 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
 
+from db.database import get_db
 from db.models.matchups import Matchup
-from routes.dependencies import get_db
 from routes.helpers.helpers import format_matchup, normalize_matchup_data
 from schemas.schemas import DeckInMatchupSchema, MatchupSchema
 
