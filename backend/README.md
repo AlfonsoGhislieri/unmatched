@@ -53,7 +53,7 @@ DEV_DATABASE_URL=postgresql+psycopg2://dev_user:dev_password@localhost:5432/unma
 
 Files taken from https://www.umleague.net/fighterstats are stored in data folder these are then used to seed the db data
 
-`python src/scripts/import_csv.py`
+`python src/scripts/populate_db.py`
 
 # Running tests
 
