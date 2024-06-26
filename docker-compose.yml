@@ -28,6 +28,7 @@ services:
     command: ['postgres', '-c', 'log_statement=all']
     environment:
       - POSTGRES_USER=proxy
+      - PGUSER=proxy
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=unmatched
     volumes:
@@ -35,7 +36,7 @@ services:
     ports:
       - '5432:5432'
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -d postgres']
+      test: ['CMD-SHELL', 'pg_isready -d unmatched -U proxy']
       interval: 10s
       timeout: 5s
       retries: 5
