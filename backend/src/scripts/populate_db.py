@@ -243,3 +243,4 @@ if __name__ == "__main__":
         insert_card_data(session, df_decks)
         print("Inserting matchup data...")
         insert_matchup_data(session, df_matchup_plays, df_matchup_winrate)
+        print("Done!")

@@ -3,7 +3,7 @@ from db.models.deck import Deck
 from db.models.fighters import Fighter
 from db.models.matchups import Matchup
 from db.models.special_ability import SpecialAbility
-from scripts.import_csv import (
+from scripts.populate_db import (
     insert_card_data,
     insert_deck_data,
     insert_fighter_data,

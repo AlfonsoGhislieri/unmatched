@@ -1,0 +1,55 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - '8000:8000'
+    volumes:
+      - ./backend:/app
+    environment:
+      - ENV=development
+      - DATABASE_URL=postgresql://proxy:password@postgresdb:5432/unmatched
+      - DOCKER_LOCAL_ADDRESS=http://${DOCKER_LOCAL_ADDRESS:-localhost}:8000
+    depends_on:
+      - postgresdb
+
+  frontend:
+    build: ./frontend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend:/app
+    environment:
+      - DOCKER_LOCAL_ADDRESS=http://${DOCKER_LOCAL_ADDRESS:-localhost}:3000
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+
+  postgresdb:
+    image: postgres:15
+    command: ['postgres', '-c', 'log_statement=all']
+    environment:
+      - POSTGRES_USER=proxy
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=unmatched
+    volumes:
+      - pgdata:/var/lib/postgresql
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -d postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  db_populate:
+    build: ./backend
+    command: ['python', 'src/scripts/populate_db.py']
+    environment:
+      - DATABASE_URL=postgresql://proxy:password@postgresdb:5432/unmatched
+    depends_on:
+      - postgresdb
+    volumes:
+      - ./backend:/app
+      - ./data:/app/data
+
+volumes:
+  pgdata: {}
