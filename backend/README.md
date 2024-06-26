@@ -46,7 +46,7 @@ pipreqs ./ --ignore .venv
 Then create .env file inside of the root and add development database URL
 
 ```
-DATABASE_URL=postgresql+psycopg2://dev_user:dev_password@localhost:5433/unmatched_dev
+DATABASE_URL=postgresql+psycopg2://dev_user:dev_password@localhost:5432/unmatched_dev
 ```
 
 # Seeding db with csv data
