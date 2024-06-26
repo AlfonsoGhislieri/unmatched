@@ -2,6 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
+from testcontainers.postgres import PostgresContainer
 
 from db.database import get_db
 from db.models.base import Base
@@ -20,10 +21,16 @@ def set_session_factory_for_all_subclasses(session):
             set_session_factory(subsubclass, session)
 
 
+@pytest.fixture(scope="session")
+def postgres_container():
+    with PostgresContainer("postgres:15") as postgres:
+        postgres.start()
+        yield postgres
+
+
 @pytest.fixture(scope="module")
-def test_engine():
-    DATABASE_URL = "postgresql://dev_user:dev_password@localhost:5432/unmatched_test"
-    engine = create_engine(DATABASE_URL)
+def test_engine(postgres_container):
+    engine = create_engine(postgres_container.get_connection_url())
 
     Base.metadata.create_all(engine)
     yield engine

@@ -5,8 +5,8 @@ from settings import settings
 
 
 # Handles the creation of the database engine and session factory.
-def get_session_engine():
-    engine = create_engine(settings.DATABASE_URL)
+def get_session_engine(database_url=settings.DATABASE_URL):
+    engine = create_engine(database_url)
     session_local = sessionmaker(
         bind=engine, autoflush=True, autocommit=False
     )  # if you want to see log of actions add echo=True
