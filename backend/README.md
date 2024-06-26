@@ -41,7 +41,9 @@ pipreqs ./ --ignore .venv
 
 # Running db setup script
 
-`sh ./src/scripts/setup-db.sh`
+Make sure you have postgres or postgress app running
+
+`bash ./src/scripts/setup-db.sh`
 
 Then create .env file inside of the root and add development database URL
 
@@ -53,7 +55,7 @@ DATABASE_URL=postgresql+psycopg2://dev_user:dev_password@localhost:5432/unmatche
 
 Files taken from https://www.umleague.net/fighterstats are stored in data folder these are then used to seed the db data
 
-`python src/scripts/populate_db.py`
+`bash src/scripts/run-populate-db.sh`
 
 # Running tests
 

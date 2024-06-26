@@ -7,7 +7,7 @@ services:
       - ./backend/src:/app/src
     environment:
       - ENV=development
-      - DATABASE_URL=postgresql://dev_user:dev_password@postgresdb:5432/unmatched_dev
+      - DATABASE_URL=postgresql+psycopg2://dev_user:dev_password@postgresdb:5432/unmatched_dev
       - DOCKER_LOCAL_ADDRESS=http://${DOCKER_LOCAL_ADDRESS:-localhost}:8000
     depends_on:
       - postgresdb
