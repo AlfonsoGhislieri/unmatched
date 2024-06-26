@@ -4,7 +4,7 @@ services:
     ports:
       - '8000:8000'
     volumes:
-      - ./backend:/app
+      - ./backend/src:/app/src
     environment:
       - ENV=development
       - DATABASE_URL=postgresql://proxy:password@postgresdb:5432/unmatched
