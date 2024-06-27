@@ -10,7 +10,7 @@ Happy gaming!
 
 ## Prerequisites
 
-- Ensure you have Docker or Docker Desktop (recommended) installed on your machine.
+- Ensure you have `Docker` or `Docker Desktop` (recommended) installed on your machine.
 
 ## Building and Running Containers for Local Development
 
@@ -48,3 +48,21 @@ If you need to manually re-populate the database, you can run the script at any 
 ```sh
 docker compose build
 ```
+
+## Connecting to the database
+
+The database runs in a docker container. You can connect to it in the terminal:
+
+```
+docker exec -it unmatched-postgresdb-1 psql -U dev_user -d unmatched_dev
+```
+
+Or using a DB tool like `TablePlus` or `DBeavor` using credentials:
+
+- **host:** `localhost`
+- **port**: `5432`
+- **database:** `unmatched_dev`
+- **username:** `dev_user`
+- **password:** `dev_password`
+
+If these don't work make sure the container is running and double check against the vars set in `docker-compose.yml`
