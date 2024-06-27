@@ -43,7 +43,7 @@ pipreqs ./ --ignore .venv
 
 Make sure you have postgres or postgress app running
 
-`bash ./src/scripts/setup-db.sh`
+`bash ./src/scripts/run-populate-db.sh`
 
 Then create .env file inside of the root and add development database URL
 
