@@ -34,32 +34,32 @@ If you face similar issues with `Pylint` or `mypy` or similar tools add to the s
 
 # Generating requirements
 
+Using pipreqs, this method is preferred since it only adds packages that are imported in the codebase. **However it does not add packages that are not imported like `coverage` or `psycopg2`, so these need to be manually added.**
+
 ```
 pip install pipreqs
 pipreqs ./ --ignore .venv
 ```
 
-# Running db setup script
-
-Make sure you have postgres or postgress app running
-
-`bash ./src/scripts/run-populate-db.sh`
-
-Then create .env file inside of the root and add development database URL
+**Or** using pip freeze, however this leads to a much larger file, and includes all packages in the venv.
 
 ```
-DATABASE_URL=postgresql+psycopg2://dev_user:dev_password@localhost:5432/unmatched_dev
+pip freeze
 ```
 
-# Seeding db with csv data
+Add these to requirements.txt
 
-Files taken from https://www.umleague.net/fighterstats are stored in data folder these are then used to seed the db data
+# Manually populating db with csv data
+
+Files are downloaded from https://www.umleague.net/fighterstats and stored in different worksheets in an excel file, which lives in the `src/data` folder, these are used to seed the db data.
+
+**Important:** data is automatically populated into the db from the backend container on startup, but it will only run the script if the file changes (it compares hashes). So if you drop tables/make changes and want a fresh db you need to manually run the following script.
 
 `bash src/scripts/run-populate-db.sh`
 
 # Running tests
 
-Backend test suite is setup using pytest run it:
+Backend test suite uses `testcontainers`, requiring no local setup, just use run it with:
 
 `pytest`
 
@@ -74,14 +74,3 @@ Or to see it on the browser
 `coverage html`
 
 Then open htmlcov/index.html in your browser
-
-# Starting up the API routes
-
-```
-fastapi dev src/main.py
-```
-
-This should start up the backend with hot reloading
-
-View docs at
-`http://127.0.0.1:8000/docs`
