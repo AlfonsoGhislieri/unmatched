@@ -11,6 +11,11 @@ services:
       - DOCKER_LOCAL_ADDRESS=http://${DOCKER_LOCAL_ADDRESS:-localhost}:8000
     depends_on:
       - postgresdb
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8000/health']
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   frontend:
     build: ./frontend
@@ -22,6 +27,11 @@ services:
       - DOCKER_LOCAL_ADDRESS=http://${DOCKER_LOCAL_ADDRESS:-localhost}:3000
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -I http://localhost:3000']
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   postgresdb:
     image: postgres:15
@@ -39,7 +49,7 @@ services:
       test: ['CMD-SHELL', 'pg_isready -d unmatched_dev -U dev_user']
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 3
 
 volumes:
   pgdata: {}
