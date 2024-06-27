@@ -15,6 +15,7 @@ from db.models.deck import Deck
 from db.models.fighters import Fighter, FighterType, RangeType
 from db.models.matchups import Matchup
 from db.models.special_ability import SpecialAbility
+from settings import settings
 
 
 def get_deck_id_map(db_session):
@@ -217,7 +218,7 @@ def insert_special_abilities(db_session, df):
 
 
 if __name__ == "__main__":
-    session_local, engine = get_session_engine()
+    session_local, engine = get_session_engine(settings.DATABASE_URL)
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
@@ -243,3 +244,4 @@ if __name__ == "__main__":
         insert_card_data(session, df_decks)
         print("Inserting matchup data...")
         insert_matchup_data(session, df_matchup_plays, df_matchup_winrate)
+        print("Done!")

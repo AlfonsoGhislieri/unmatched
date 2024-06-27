@@ -1,13 +1,21 @@
 import pytest
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
+from testcontainers.postgres import PostgresContainer
 
 from db.database import get_session_engine
 
 
 @pytest.fixture(scope="module")
-def db_resources():
-    Session, engine = get_session_engine()
+def postgres_container():
+    with PostgresContainer("postgres:15") as postgres:
+        postgres.start()
+        yield postgres
+
+
+@pytest.fixture(scope="module")
+def db_resources(postgres_container):
+    Session, engine = get_session_engine(postgres_container.get_connection_url())
     return Session, engine
 
 

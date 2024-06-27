@@ -1,0 +1,21 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+RUN apk update
+RUN apk --no-cache add curl
+
+COPY package.json .
+COPY yarn.lock .
+
+COPY .yarn .yarn
+COPY .yarnrc.yml .
+
+COPY tsconfig.json .
+
+COPY public/ public/
+COPY src/ src/
+
+RUN yarn install
+
+CMD ["yarn", "start"]
