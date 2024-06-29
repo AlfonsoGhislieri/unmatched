@@ -27,7 +27,7 @@ services:
       - DOCKER_LOCAL_ADDRESS=http://${DOCKER_LOCAL_ADDRESS:-frontend}:3000
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
-      - REACT_APP_BACKEND_URL=http://backend:8000
+      - NEXT_PUBLIC_BACKEND_URL=http://backend:8000
     healthcheck:
       test: ['CMD', 'curl', '-I', 'http://frontend:3000']
       interval: 10s
