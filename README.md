@@ -46,7 +46,7 @@ A hash is created for the xls file, and on each container start, the backend con
 If you need to manually re-populate the database, you can run the script at any time:
 
 ```sh
-docker compose build
+bash backend/src/scripts/run-populate-db.sh
 ```
 
 ## Connecting to the database
